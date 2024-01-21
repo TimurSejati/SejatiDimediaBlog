@@ -2,16 +2,26 @@ import { Link } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
+import axios from "axios";
 
+let baseURL = "https://sejati-dimedia-blog.vercel.app";
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("/api/post/getPosts");
-      const data = await res.json();
-      setPosts(data.posts);
+      try {
+        const axiosInstance = axios.create({
+          baseURL,
+        });
+        const response = await axiosInstance.get("/api/post/getPosts");
+        setPosts(response.data.posts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        // Handle errors as needed
+      }
     };
+
     fetchPosts();
   }, []);
   return (
