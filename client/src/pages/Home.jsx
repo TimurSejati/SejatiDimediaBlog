@@ -1,20 +1,16 @@
 import { Link } from "react-router-dom";
-import CallToAction from "../components/CallToAction";
+// import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
-import axios from "axios";
+import createAxiosInstance from "../../utils/axiosInstance";
 
-let baseURL = "https://sejati-dimedia-blog.vercel.app";
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const axiosInstance = axios.create({
-          baseURL,
-        });
-        const response = await axiosInstance.get("/api/post/getPosts");
+        const response = await createAxiosInstance().get("/api/post/getPosts");
         setPosts(response.data.posts);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -24,6 +20,9 @@ export default function Home() {
 
     fetchPosts();
   }, []);
+
+  // Rest of your component code
+
   return (
     <div>
       <div className="flex flex-col max-w-6xl gap-6 px-3 mx-auto p-28 ">
