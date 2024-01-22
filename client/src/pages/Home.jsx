@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import createAxiosInstance from "../../utils/axiosInstance";
+import Hero from "../components/Hero";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -25,20 +26,8 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex flex-col max-w-6xl gap-6 px-3 mx-auto p-28 ">
-        <h1 className="text-3xl font-bold lg:text-6xl">
-          Welcome to Sejati Dimedia Blog
-        </h1>
-        <p className="text-xs text-gray-500 sm:text-sm">
-          Here you'll find a variety of articles and tutorials on topics such as
-          web development, software engineering, and programming languages.
-        </p>
-        <Link
-          to="/search"
-          className="text-xs font-bold text-teal-500 sm:text-sm hover:underline"
-        >
-          View all posts
-        </Link>
+      <div className="flex flex-col gap-6 px-3 mx-auto max-w-8xl">
+        <Hero />
       </div>
       <div className="p-3 bg-amber-100 dark:bg-slate-700">
         {/* <CallToAction /> */}

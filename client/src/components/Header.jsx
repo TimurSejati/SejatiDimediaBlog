@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
+import createAxiosInstance from "../../utils/axiosInstance";
+import { images } from "../constants";
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -26,40 +28,39 @@ export default function Header() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
+      const res = await createAxiosInstance().post("/api/user/signout");
+      if (res.status === 200) {
         dispatch(signoutSuccess());
+      } else {
+        console.log(res.data.message);
       }
+      // const data = await res.json();
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("searchTerm", searchTerm);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const urlParams = new URLSearchParams(location.search);
+  //   urlParams.set("searchTerm", searchTerm);
+  //   const searchQuery = urlParams.toString();
+  //   navigate(`/search?${searchQuery}`);
+  // };
 
   return (
-    <Navbar className="border-b-2">
+    <Navbar className="sticky top-0 left-0 right-0 border-b-2 z-[9999]">
       <Link
         to="/"
         className="self-center text-sm font-semibold whitespace-nowrap sm:text-xl dark:text-white"
       >
-        <span className="px-2 py-1 text-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+        <img src={images.Logo} alt="Logo" className="w-24" />
+        {/* <span className="px-2 py-1 text-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
           Sejati Dimedia
         </span>
-        Blog
+        Blog */}
       </Link>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}>
         <TextInput
           type="text"
           placeholder="Search..."
@@ -71,7 +72,7 @@ export default function Header() {
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch />
-      </Button>
+      </Button> */}
       <div className="flex gap-2 md:order-2">
         <Button
           className="hidden w-12 h-10 sm:inline"
@@ -113,6 +114,9 @@ export default function Header() {
       <Navbar.Collapse>
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/">Home</Link>
+        </Navbar.Link>
+        <Navbar.Link active={path === "/blogs"} as={"div"}>
+          <Link to="/blogs">Blogs</Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/about"} as={"div"}>
           <Link to="/about">About</Link>

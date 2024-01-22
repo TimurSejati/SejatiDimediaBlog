@@ -7,6 +7,7 @@ import {
   BsGithub,
   BsDribbble,
 } from "react-icons/bs";
+import { images } from "../constants";
 export default function FooterCom() {
   return (
     <Footer container className="border border-t-8 border-teal-500">
@@ -17,10 +18,7 @@ export default function FooterCom() {
               to="/"
               className="self-center text-lg font-semibold whitespace-nowrap sm:text-xl dark:text-white"
             >
-              <span className="px-2 py-1 text-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                Sejati Dimedia
-              </span>
-              Blog
+              <img src={images.Logo} alt="Logo" className="w-32" />
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6">
