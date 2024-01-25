@@ -8,6 +8,7 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
+import { images } from "../constants";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -48,10 +49,11 @@ export default function SignIn() {
         {/* left */}
         <div className="flex-1">
           <Link to="/" className="text-4xl font-bold dark:text-white">
-            <span className="px-2 py-1 text-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            {/* <span className="px-2 py-1 text-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
               Sejati Dimedia
             </span>
-            Blog
+            Blog */}
+            <img src={images.Logo} alt="Logo" className="w-40" />
           </Link>
           <p className="mt-5 text-sm">
             This is a demo project. You can sign in with your email and password
