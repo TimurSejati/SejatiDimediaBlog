@@ -77,15 +77,13 @@ export const google = async (req, res, next) => {
         process.env.JWT_SECRET
       );
       const { password, ...rest } = user._doc;
-      res.setHeader(
-        "Access-Control-Allow-Origin",
-        "https://sejatidimedia-blog.vercel.app"
-      );
-      res.setHeader("Access-Control-Allow-Credentials", "true");
+
       res
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true,
+          sameSite: "None",
+          secure: true,
         })
         .json(rest);
     } else {
