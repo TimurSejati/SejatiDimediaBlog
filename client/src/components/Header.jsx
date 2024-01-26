@@ -74,14 +74,14 @@ export default function Header() {
         <AiOutlineSearch />
       </Button> */}
       <div className="flex gap-2 md:order-2">
-        <Button
+        {/* <Button
           className="hidden w-12 h-10 sm:inline"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
         >
           {theme === "light" ? <FaSun /> : <FaMoon />}
-        </Button>
+        </Button> */}
         {currentUser ? (
           <Dropdown
             arrowIcon={false}
@@ -112,16 +112,34 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link active={path === "/"} as={"div"}>
+        <Navbar.Link
+          className={`${path == "/" ? "text-primary font-semibold" : ""}`}
+          // active={path === "/"}
+          as={"div"}
+        >
           <Link to="/">Home</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/blogs"} as={"div"}>
+        <Navbar.Link
+          className={`${path == "/blogs" ? "text-primary font-semibold" : ""}`}
+          // active={path === "/blogs"}
+          as={"div"}
+        >
           <Link to="/blogs">Blogs</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"} as={"div"}>
+        <Navbar.Link
+          className={`${path == "/about" ? "text-primary font-semibold" : ""}`}
+          // active={path === "/about"}
+          as={"div"}
+        >
           <Link to="/about">About</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/projects"} as={"div"}>
+        <Navbar.Link
+          className={`${
+            path == "/projects" ? "text-primary font-semibold" : ""
+          }`}
+          active={path === "/projects"}
+          as={"div"}
+        >
           <Link to="/projects">Projects</Link>
         </Navbar.Link>
       </Navbar.Collapse>

@@ -1,4 +1,5 @@
 import Post from "../models/post.model.js";
+import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
 export const create = async (req, res, next) => {
@@ -45,7 +46,8 @@ export const getposts = async (req, res, next) => {
     })
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
-      .limit(limit);
+      .limit(limit)
+      .populate("userId", "profilePicture");
 
     const totalPosts = await Post.countDocuments();
 

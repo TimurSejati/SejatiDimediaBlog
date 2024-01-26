@@ -10,7 +10,7 @@ import {
 import { images } from "../constants";
 export default function FooterCom() {
   return (
-    <Footer container className="border border-t-8 border-teal-500">
+    <Footer container className="border border-t-8 border-primary">
       <div className="w-full mx-auto max-w-7xl">
         <div className="grid justify-between w-full sm:flex md:grid-cols-1">
           <div className="mt-5">
