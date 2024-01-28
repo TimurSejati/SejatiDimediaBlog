@@ -1,102 +1,123 @@
-import { Button, Spinner } from 'flowbite-react';
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import CallToAction from '../components/CallToAction';
-import CommentSection from '../components/CommentSection';
-import PostCard from '../components/PostCard';
+import { Button, Spinner } from "flowbite-react";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
+import { useQuery } from "@tanstack/react-query";
+import { getSinglePost } from "../../services/posts";
+import BreadCrumbs from "../components/BreadCrumbs";
+
+import { generateHTML } from "@tiptap/html";
+import Bold from "@tiptap/extension-bold";
+import Italic from "@tiptap/extension-italic";
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import parse from "html-react-parser";
+import Editor from "../components/editor/Editor";
 
 export default function PostPage() {
-  const { postSlug } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [post, setPost] = useState(null);
-  const [recentPosts, setRecentPosts] = useState(null);
+  const { blogSlug } = useParams();
+  const [breadCrumbsData, setbreadCrumbsData] = useState([]);
+  const [body, setBody] = useState(null);
+
+  const { data, isLoading, isError } = useQuery({
+    queryFn: () => getSinglePost(blogSlug),
+    queryKey: ["blog", blogSlug],
+    // onSuccess: (data) => {},
+  });
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
-        const data = await res.json();
-        if (!res.ok) {
-          setError(true);
-          setLoading(false);
-          return;
-        }
-        if (res.ok) {
-          setPost(data.posts[0]);
-          setLoading(false);
-          setError(false);
-        }
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
-    };
-    fetchPost();
-  }, [postSlug]);
+    setbreadCrumbsData([
+      { name: "Home", link: "/" },
+      { name: "Blog", link: "/blog" },
+      { name: "Article title", link: `/blog/${data?.slug}` },
+    ]);
+    // setBody(
+    //   parse(generateHTML(data?.body, [Bold, Italic, Document, Paragraph, Text]))
+    // );
+  }, [data]);
 
-  useEffect(() => {
-    try {
-      const fetchRecentPosts = async () => {
-        const res = await fetch(`/api/post/getposts?limit=3`);
-        const data = await res.json();
-        if (res.ok) {
-          setRecentPosts(data.posts);
-        }
-      };
-      fetchRecentPosts();
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, []);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(false);
+  // const [post, setPost] = useState(null);
+  // const [recentPosts, setRecentPosts] = useState(null);
 
-  if (loading)
+  // useEffect(() => {
+  //   try {
+  //     const fetchRecentPosts = async () => {
+  //       const res = await fetch(`/api/post/getposts?limit=3`);
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         setRecentPosts(data.posts);
+  //       }
+  //     };
+  //     fetchRecentPosts();
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }, []);
+
+  if (isLoading)
     return (
-      <div className='flex justify-center items-center min-h-screen'>
-        <Spinner size='xl' />
+      <div className="flex items-center justify-center min-h-screen">
+        <Spinner size="xl" />
       </div>
     );
   return (
-    <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>
-      <h1 className='text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>
-        {post && post.title}
-      </h1>
-      <Link
-        to={`/search?category=${post && post.category}`}
-        className='self-center mt-5'
-      >
-        <Button color='gray' pill size='xs'>
-          {post && post.category}
-        </Button>
-      </Link>
-      <img
-        src={post && post.image}
-        alt={post && post.title}
-        className='mt-10 p-3 max-h-[600px] w-full object-cover'
-      />
-      <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>
-        <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
-        <span className='italic'>
-          {post && (post.content.length / 1000).toFixed(0)} mins read
-        </span>
-      </div>
-      <div
-        className='p-3 max-w-2xl mx-auto w-full post-content'
-        dangerouslySetInnerHTML={{ __html: post && post.content }}
-      ></div>
-      <div className='max-w-4xl mx-auto w-full'>
-        <CallToAction />
-      </div>
-      <CommentSection postId={post._id} />
-
-      <div className='flex flex-col justify-center items-center mb-5'>
-        <h1 className='text-xl mt-5'>Recent articles</h1>
-        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
-          {recentPosts &&
-            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
+    <section className="container flex flex-col max-w-5xl px-5 py-5 mx-auto lg:flex-row lg:gap-x-5 lg:items-start">
+      <article className="flex-1">
+        <BreadCrumbs data={breadCrumbsData} />
+        <img
+          className="w-full rounded-xl"
+          src={data?.photo}
+          alt={data?.title}
+        />
+        <div className="flex gap-2 mt-4">
+          {data?.categories?.map((category) => (
+            <Link
+              key={category.id}
+              to={`/blog?category=${category.name}`}
+              className="inline-block text-sm text-primary font-roboto md:text-base"
+            >
+              {category.name}
+            </Link>
+          ))}
         </div>
-      </div>
-    </main>
+        <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
+          {data?.title}
+        </h1>
+        <div className="w-full"></div>
+        <div className="w-full">
+          {!isLoading && !isError && (
+            <Editor content={data?.body} editable={false} />
+          )}
+        </div>
+        {/* <CommentsContainer
+              comments={data?.comments}
+              className="mt-10"
+              logginedUserId={userState?.userInfo?._id}
+              postSlug={slug}
+            /> */}
+      </article>
+      {/* <div>
+            <SuggestedPosts
+              header="Latest Article"
+              posts={postsData?.data}
+              tags={data?.tags}
+              className="mt-8 lg:mt-0 lg:max-w-xs"
+            />
+            <div className="mt-7">
+              <h2 className="mb-4 font-medium font-roboto text-dark-hard md:text-xl">
+                Share on:
+              </h2>
+              <SocialShareButtons
+                url={encodeURI(window.location.href)}
+                title={encodeURIComponent(data?.title)}
+              />
+            </div>
+          </div> */}
+    </section>
   );
 }

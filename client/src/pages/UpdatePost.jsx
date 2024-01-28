@@ -114,7 +114,7 @@ export default function UpdatePost() {
   };
   return (
     <div className="max-w-3xl min-h-screen p-3 mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">Update post</h1>
+      <h1 className="text-3xl font-semibold text-center my-7">Update posts</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col justify-between gap-4 sm:flex-row">
           <TextInput
