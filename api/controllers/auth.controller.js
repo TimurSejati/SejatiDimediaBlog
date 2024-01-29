@@ -61,7 +61,7 @@ export const signin = async (req, res, next) => {
       .cookie("access_token", token, {
         httpOnly: true,
       })
-      .json(rest);
+      .json({ ...rest, token: await validUser.generateJWT() });
   } catch (error) {
     next(error);
   }
@@ -85,7 +85,7 @@ export const google = async (req, res, next) => {
           sameSite: "None",
           secure: true,
         })
-        .json(rest);
+        .json({ ...rest, token: await user.generateJWT() });
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
