@@ -60,7 +60,7 @@ export default function DashPosts() {
 
   return (
     <div className="w-3/4 p-3 overflow-x-scroll table-auto md:mx-auto scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser.isAdmin && data?.data.length > 0 ? (
+      {currentUser?.isAdmin && data?.data?.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>
@@ -73,7 +73,7 @@ export default function DashPosts() {
                 <span>Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            {userPosts?.data.map((post) => (
+            {userPosts?.data?.map((post) => (
               <Table.Body key={post._id} className="divide-y">
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell>

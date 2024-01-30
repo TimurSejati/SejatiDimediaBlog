@@ -3,7 +3,7 @@ import { images } from "../constants";
 
 const Hero = () => {
   return (
-    <section className="container flex items-center px-5 py-5 lg:flex-row">
+    <section className="container flex flex-col items-center px-5 py-5 lg:flex-row">
       <div className="mt-10 lg:w-2/3">
         <h1 className="font-roboto text-3xl text-center font-bold text-dark-soft md:text-5xl lg:text-4xl xl:text-5x; lg:text-left lg:max-w-[540px]">
           Read the most interesting blogs
@@ -42,9 +42,9 @@ const Hero = () => {
           </ul>
         </div>
       </div>
-      <div className="hidden lg:block lg:1/2">
+      <div className="hidden lg:block lg:w-1/2">
         <img
-          className="w-8/12"
+          className="w-[400px] lg:ml-[90px]"
           src={images.Hero}
           alt="users are reading blogs"
         />

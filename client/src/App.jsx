@@ -16,6 +16,7 @@ import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Search from "./pages/Search";
 import UpdatePost2 from "./pages/UpdatePost2";
+import CreatePost2 from "./pages/CreatePost2";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/create-post2" element={<CreatePost2 />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
           <Route path="/update-post2/:slug" element={<UpdatePost2 />} />
         </Route>

@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex flex-col gap-6 px-3 mx-auto max-w-7xl">
+      <div className="px-3 mx-auto max-w-7xl">
         <Hero />
       </div>
       {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
