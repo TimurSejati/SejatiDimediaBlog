@@ -27,7 +27,9 @@ export const signup = async (req, res, next) => {
 
   try {
     await newUser.save();
-    res.json("Signup successful");
+    res.json({
+      message: "Signup successful",
+    });
   } catch (error) {
     next(error);
   }
@@ -61,7 +63,11 @@ export const signin = async (req, res, next) => {
       .cookie("access_token", token, {
         httpOnly: true,
       })
-      .json({ ...rest, token: await validUser.generateJWT() });
+      .json({
+        ...rest,
+        token: await validUser.generateJWT(),
+        message: "Success SignIn",
+      });
   } catch (error) {
     next(error);
   }

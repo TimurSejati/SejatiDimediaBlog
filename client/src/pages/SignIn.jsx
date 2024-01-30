@@ -9,6 +9,8 @@ import {
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
 import { images } from "../constants";
+import { signIn } from "../../services/auth";
+import toast from "react-hot-toast";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -25,22 +27,20 @@ export default function SignIn() {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
+      const res = await signIn(formData);
+      console.log(res.data, "res---");
+      if (res.data.status !== 200) {
+        dispatch(signInFailure(res.data.message));
       }
 
-      if (res.ok) {
-        dispatch(signInSuccess(data));
+      if (res.data.status === 200) {
+        dispatch(signInSuccess(res.data.data));
+        toast.success(res.data.data.message);
         navigate("/");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
+      toast.error(error.message);
     }
   };
   return (
@@ -104,11 +104,11 @@ export default function SignIn() {
               Sign Up
             </Link>
           </div>
-          {errorMessage && (
+          {/* {errorMessage && (
             <Alert className="mt-5" color="failure">
               {errorMessage}
             </Alert>
-          )}
+          )} */}
         </div>
       </div>
     </div>

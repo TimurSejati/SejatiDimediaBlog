@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 import { images } from "../constants";
+import { signUp } from "../../services/auth";
+import { toast } from "react-hot-toast";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -20,21 +22,18 @@ export default function SignUp() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        return setErrorMessage(data.message);
+      const res = await signUp(formData);
+      if (res.data.status !== 200) {
+        return setErrorMessage(res.data.message);
       }
       setLoading(false);
-      if (res.ok) {
+      if (res.data.status == 200) {
+        toast.success(res.data.data.message);
         navigate("/sign-in");
       }
     } catch (error) {
       setErrorMessage(error.message);
+      toast.error(error.message);
       setLoading(false);
     }
   };
@@ -108,11 +107,11 @@ export default function SignUp() {
               Sign In
             </Link>
           </div>
-          {errorMessage && (
+          {/* {errorMessage && (
             <Alert className="mt-5" color="failure">
               {errorMessage}
             </Alert>
-          )}
+          )} */}
         </div>
       </div>
     </div>

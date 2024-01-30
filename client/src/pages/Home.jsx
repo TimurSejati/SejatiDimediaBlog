@@ -36,14 +36,14 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex flex-col gap-6 px-3 mx-auto max-w-8xl">
+      <div className="flex flex-col gap-6 px-3 mx-auto max-w-7xl">
         <Hero />
       </div>
       {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
         <CallToAction />
       </div> */}
 
-      <div className="flex flex-col max-w-6xl gap-8 p-3 mx-auto py-7">
+      <div className="flex flex-col gap-8 p-3 mx-auto max-w-7xl py-7">
         {isLoading ? (
           <>Loading</>
         ) : (
