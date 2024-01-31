@@ -3,15 +3,17 @@ import { v4 as uuidv4 } from "uuid";
 
 const createPost = async (req, res, next) => {
   try {
+    console.log(req.body.body);
     const post = new Post2({
-      title: "sample-title",
-      caption: "sample-caption",
+      title: req.body.title,
+      caption: req.body.caption,
       slug: uuidv4(),
-      body: {
-        type: "doc",
-        content: [],
-      },
-      photo: "",
+      body: JSON.parse(req.body.body),
+      // body: {
+      //   type: "doc",
+      //   content: [],
+      // },
+      photo: req.body.photo,
       user: req.user._id,
     });
 
@@ -25,8 +27,6 @@ const createPost = async (req, res, next) => {
 const updatePost = async (req, res, next) => {
   try {
     const post = await Post2.findOne({ slug: req.params.slug });
-
-    console.log(req.body);
 
     if (!post) {
       const error = new Error("Post was not found");

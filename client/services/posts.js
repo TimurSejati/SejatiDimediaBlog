@@ -30,7 +30,8 @@ export const getSinglePost = async (slug) => {
   }
 };
 
-export const createPost = async ({ postData, token }) => {
+export const createPost = async ({ dataPost, token }) => {
+  console.log(dataPost, "FROM SERVICE");
   try {
     const config = {
       headers: {
@@ -38,10 +39,10 @@ export const createPost = async ({ postData, token }) => {
       },
     };
 
-    // const { data } = await axios.put(`/api/posts/${slug}`, postData, config);
+    // const { data } = await axios.put(`/api/posts/${slug}`, dataPost, config);
     const { data } = await createAxiosInstance().post(
       `/api/post2`,
-      postData,
+      dataPost,
       config
     );
     return data;

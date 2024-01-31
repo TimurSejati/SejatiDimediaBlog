@@ -38,23 +38,24 @@ const CreatePost2 = () => {
   const [postSlug, setPostSlug] = useState(slug);
   const [caption, setCaption] = useState("");
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null); 
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
 
   const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
     useMutation({
-      mutationFn: ({ postData, token }) => {
+      mutationFn: ({ dataPost, token }) => {
+        console.log(dataPost, 'mutate');
         return createPost({
-          postData,
-          token,
+          dataPost,
+          token
         });
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries(["blog", slug]);
         toast.success("Post is success created");
-        navigate(`/admin/posts/manage/edit/${data.slug}`, { replace: true });
+        // navigate(`/admin/posts/manage/edit/${data.slug}`, { replace: true });
       },
       onError: (error) => {
         toast.error(error.message);
@@ -100,17 +101,17 @@ const CreatePost2 = () => {
     }
   };
 
-  const handleUpdatePost = async () => {
-    let createData = new FormData();
+  const handleCratePost = async () => {
+    let dataPost = new FormData();
 
-    createData.append("title", title);
-    createData.append("caption", caption);
-    createData.append("slug", postSlug);
-    createData.append("photo", initialPhoto);
-    createData.append("body", JSON.stringify(body));
+    dataPost.append("title", title);
+    dataPost.append("caption", caption);
+    dataPost.append("slug", postSlug);
+    dataPost.append("photo", initialPhoto);
+    dataPost.append("body", JSON.stringify(body));
 
     mutateCreatePost({
-      createData,
+      dataPost,
       token: userState.currentUser.token,
     });
   };
@@ -280,7 +281,7 @@ const CreatePost2 = () => {
           <button
             disabled={isLoadingCreatePost}
             type="button"
-            onClick={handleUpdatePost}
+            onClick={handleCratePost}
             className="w-full px-4 py-2 font-semibold text-white bg-green-500 rounded-lg disabled:cursor-not-allowed disabled:opacity-70"
           >
             Create Post
