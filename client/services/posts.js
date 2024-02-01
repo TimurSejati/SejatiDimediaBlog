@@ -4,7 +4,7 @@ export const getAllPosts = async (
   searchKeyword = "",
   userId = "",
   page = 1,
-  limit = 10
+  limit = 6
 ) => {
   try {
     const { data } = await createAxiosInstance().get(

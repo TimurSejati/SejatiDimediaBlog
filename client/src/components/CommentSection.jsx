@@ -13,29 +13,30 @@ export default function CommentSection({ postId }) {
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
       return;
     }
     try {
-      const res = await fetch("/api/comment/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: comment,
-          postId,
-          userId: currentUser._id,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setComment("");
-        setCommentError(null);
-        setComments([data, ...comments]);
-      }
+      // const res = await fetch("/api/comment/create", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     content: comment,
+      //     postId,
+      //     userId: currentUser._id,
+      //   }),
+      // });
+      // const data = await res.json();
+      // if (res.ok) {
+      //   setComment("");
+      //   setCommentError(null);
+      //   setComments([data, ...comments]);
+      // }
     } catch (error) {
       setCommentError(error.message);
     }
@@ -110,6 +111,12 @@ export default function CommentSection({ postId }) {
       console.log(error.message);
     }
   };
+  // const customTheme = {
+  //   colors: {
+  //     gray: "bg-gray-50 border-gray-300 text-gray-900 focus:border-primary focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500",
+  //   },
+  // };
+
   return (
     <div className="w-full max-w-2xl p-3 ">
       {currentUser ? (
@@ -141,6 +148,7 @@ export default function CommentSection({ postId }) {
           className="p-3 border rounded-md border-primary"
         >
           <Textarea
+            className="focus:border-primary"
             placeholder="Tambahkan komentar"
             rows="3"
             maxLength="200"

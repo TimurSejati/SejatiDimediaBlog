@@ -96,6 +96,9 @@ const getPost = async (req, res, next) => {
 
 const getAllPost = async (req, res, next) => {
   try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
     const posts = await Post2.find({
       ...(req.query.userId && { user: req.query.userId }),
       ...(req.query.postId && { _id: req.query.postId }),
@@ -105,12 +108,16 @@ const getAllPost = async (req, res, next) => {
           { content: { $regex: req.query.searchTerm, $options: "i" } },
         ],
       }),
-    }).populate([
-      {
-        path: "user",
-        select: ["profilePicture", "username"],
-      },
-    ]);
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit)
+      .populate([
+        {
+          path: "user",
+          select: ["profilePicture", "username"],
+        },
+      ]);
 
     res.json(posts);
   } catch (error) {

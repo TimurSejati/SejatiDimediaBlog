@@ -73,7 +73,7 @@ export default function Home() {
                     to={"/search"}
                     className="flex items-center px-6 py-3 mx-auto font-bold border-2 rounded-lg gap-x-2 text-primary border-primary"
                   >
-                    View all posts
+                    Lihat semua artikel
                   </Link>
                 </div>
               )}

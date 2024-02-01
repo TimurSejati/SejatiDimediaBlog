@@ -113,7 +113,9 @@ export default function Header() {
       </div>
       <Navbar.Collapse>
         <Navbar.Link
-          className={`${path == "/" ? "text-primary font-semibold" : ""}`}
+          className={`${
+            path == "/" ? "text-primary font-semibold" : ""
+          } hover:text-primary`}
           // active={path === "/"}
           as={"div"}
         >
