@@ -126,7 +126,7 @@ export default function Header() {
         >
           <Link to="/blogs">Blogs</Link>
         </Navbar.Link>
-        <Navbar.Link
+        {/* <Navbar.Link
           className={`${path == "/about" ? "text-primary font-semibold" : ""}`}
           // active={path === "/about"}
           as={"div"}
@@ -141,7 +141,7 @@ export default function Header() {
           as={"div"}
         >
           <Link to="/projects">Projects</Link>
-        </Navbar.Link>
+        </Navbar.Link> */}
       </Navbar.Collapse>
     </Navbar>
   );

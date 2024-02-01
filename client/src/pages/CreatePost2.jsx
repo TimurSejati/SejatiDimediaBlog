@@ -38,7 +38,7 @@ const CreatePost2 = () => {
   const [postSlug, setPostSlug] = useState(slug);
   const [caption, setCaption] = useState("");
 
-  const [file, setFile] = useState(null); 
+  const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
@@ -46,10 +46,10 @@ const CreatePost2 = () => {
   const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
     useMutation({
       mutationFn: ({ dataPost, token }) => {
-        console.log(dataPost, 'mutate');
+        console.log(dataPost, "mutate");
         return createPost({
           dataPost,
-          token
+          token,
         });
       },
       onSuccess: (data) => {
@@ -270,7 +270,7 @@ const CreatePost2 = () => {
                 />
               )}
             </div> */}
-          <div className="w-full mt-5">
+          <div className="w-full mt-5 mb-10">
             <Editor
               editable={true}
               onDataChange={(data) => {
@@ -282,7 +282,7 @@ const CreatePost2 = () => {
             disabled={isLoadingCreatePost}
             type="button"
             onClick={handleCratePost}
-            className="w-full px-4 py-2 font-semibold text-white bg-green-500 rounded-lg disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full px-4 py-2 font-semibold text-white rounded-lg bg-primary disabled:cursor-not-allowed disabled:opacity-70"
           >
             Create Post
           </button>

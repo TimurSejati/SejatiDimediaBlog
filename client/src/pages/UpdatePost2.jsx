@@ -303,7 +303,7 @@ const UpdatePost2 = () => {
                 />
               )}
             </div> */}
-            <div className="w-full mt-5">
+            <div className="w-full mt-5 mb-10">
               {isPostDataLoaded && (
                 <Editor
                   content={data?.body}
@@ -318,7 +318,7 @@ const UpdatePost2 = () => {
               disabled={isLoadingUpdatePostDetail}
               type="button"
               onClick={handleUpdatePost}
-              className="w-full px-4 py-2 font-semibold text-white bg-green-500 rounded-lg disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full px-4 py-2 font-semibold text-white rounded-lg bg-primary disabled:cursor-not-allowed disabled:opacity-70"
             >
               Update Post
             </button>

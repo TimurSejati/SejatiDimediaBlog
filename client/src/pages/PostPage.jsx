@@ -95,11 +95,12 @@ export default function PostPage() {
           )}
         </div>
         {/* <CommentsContainer
-              comments={data?.comments}
-              className="mt-10"
-              logginedUserId={userState?.userInfo?._id}
-              postSlug={slug}
-            /> */}
+          comments={data?.comments}
+          className="mt-10"
+          logginedUserId={userState?.userInfo?._id}
+          postSlug={slug}
+        /> */}
+        <CommentSection />
       </article>
       {/* <div>
             <SuggestedPosts
