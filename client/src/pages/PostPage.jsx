@@ -16,11 +16,13 @@ import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import parse from "html-react-parser";
 import Editor from "../components/editor/Editor";
+import { useSelector } from "react-redux";
 
 export default function PostPage() {
   const { blogSlug } = useParams();
   const [breadCrumbsData, setbreadCrumbsData] = useState([]);
   const [body, setBody] = useState(null);
+  const userState = useSelector((state) => state.user);
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost(blogSlug),
@@ -100,7 +102,7 @@ export default function PostPage() {
           logginedUserId={userState?.userInfo?._id}
           postSlug={slug}
         /> */}
-        <CommentSection />
+        <CommentSection postId={data?._id} />
       </article>
       {/* <div>
             <SuggestedPosts

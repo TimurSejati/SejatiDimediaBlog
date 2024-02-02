@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema(
   {
@@ -10,10 +10,10 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    userId: {
-      type: String,
-      required: true,
-    },
+    // userId: {
+    //   type: String,
+    //   required: true,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     likes: {
       type: Array,
       default: [],
@@ -26,6 +26,6 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Comment = mongoose.model('Comment', commentSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 export default Comment;

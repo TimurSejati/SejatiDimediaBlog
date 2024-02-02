@@ -13,7 +13,7 @@ export const createComment = async (req, res, next) => {
     const newComment = new Comment({
       content,
       postId,
-      userId,
+      user: userId,
     });
     await newComment.save();
 
@@ -25,9 +25,16 @@ export const createComment = async (req, res, next) => {
 
 export const getPostComments = async (req, res, next) => {
   try {
-    const comments = await Comment.find({ postId: req.params.postId }).sort({
-      createdAt: -1,
-    });
+    const comments = await Comment.find({ postId: req.params.postId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate([
+        {
+          path: "user",
+          select: ["profilePicture", "username"],
+        },
+      ]);
     res.status(200).json(comments);
   } catch (error) {
     next(error);
@@ -92,7 +99,9 @@ export const deleteComment = async (req, res, next) => {
       );
     }
     await Comment.findByIdAndDelete(req.params.commentId);
-    res.status(200).json("Comment has been deleted");
+    res.status(200).json({
+      message: '"Comment has been deleted"',
+    });
   } catch (error) {
     next(error);
   }

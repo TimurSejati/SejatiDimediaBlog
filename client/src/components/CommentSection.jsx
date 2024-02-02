@@ -4,6 +4,13 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import {
+  addComment,
+  deleteComment,
+  getAllComments,
+} from "../../services/comments";
+import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export default function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
@@ -14,12 +21,36 @@ export default function CommentSection({ postId }) {
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
 
+  const { data } = useQuery({
+    queryFn: () => getAllComments({ postId }),
+    queryKey: ["comments", postId],
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
+
+  useEffect(() => {
+    setComments(data?.data);
+  }, [data]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
       return;
     }
     try {
+      let dataComment = {
+        content: comment,
+        postId,
+        userId: currentUser._id,
+      };
+
+      const res = await addComment({ dataComment });
+      if (res.data.status == 200) {
+        setComment("");
+        setComments([res.data.data, ...comments]);
+      }
       // const res = await fetch("/api/comment/create", {
       //   method: "POST",
       //   headers: {
@@ -42,20 +73,20 @@ export default function CommentSection({ postId }) {
     }
   };
 
-  useEffect(() => {
-    const getComments = async () => {
-      try {
-        const res = await fetch(`/api/comment/getPostComments/${postId}`);
-        if (res.ok) {
-          const data = await res.json();
-          setComments(data);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getComments();
-  }, [postId]);
+  // useEffect(() => {
+  //   const getComments = async () => {
+  //     try {
+  //       const res = await fetch(`/api/comment/getPostComments/${postId}`);
+  //       if (res.ok) {
+  //         const data = await res.json();
+  //         setComments(data);
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   getComments();
+  // }, [postId]);
 
   const handleLike = async (commentId) => {
     try {
@@ -100,22 +131,22 @@ export default function CommentSection({ postId }) {
         navigate("/sign-in");
         return;
       }
-      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setComments(comments.filter((comment) => comment._id !== commentId));
+      const res = await deleteComment({ commentId });
+      if (res.data.status == 200) {
+        toast.success(res.data.data.message);
+        console.log(res, "client deleted");
       }
+      // const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+      //   method: "DELETE",
+      // });
+      // if (res.ok) {
+      //   const data = await res.json();
+      //   setComments(comments.filter((comment) => comment._id !== commentId));
+      // }
     } catch (error) {
       console.log(error.message);
     }
   };
-  // const customTheme = {
-  //   colors: {
-  //     gray: "bg-gray-50 border-gray-300 text-gray-900 focus:border-primary focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500",
-  //   },
-  // };
 
   return (
     <div className="w-full max-w-2xl p-3 ">
@@ -170,17 +201,17 @@ export default function CommentSection({ postId }) {
           )}
         </form>
       )}
-      {comments.length === 0 ? (
+      {comments?.length === 0 ? (
         <p className="my-5 text-sm">Tidak ada komentar</p>
       ) : (
         <>
           <div className="flex items-center gap-1 my-5 text-sm">
             <p>Comments</p>
             <div className="px-2 py-1 border border-gray-400 rounded-sm">
-              <p>{comments.length}</p>
+              <p>{comments?.length}</p>
             </div>
           </div>
-          {comments.map((comment) => (
+          {comments?.map((comment) => (
             <Comment
               key={comment._id}
               comment={comment}

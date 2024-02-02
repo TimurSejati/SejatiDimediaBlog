@@ -13,3 +13,32 @@ export const addComment = async ({ dataComment }) => {
     throw new Error(error.message);
   }
 };
+
+export const getAllComments = async ({ postId }) => {
+  try {
+    const { data } = await createAxiosInstance().get(
+      `/api/comment/getPostComments/${postId}`
+    );
+
+    return { data };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const deleteComment = async ({ commentId }) => {
+  try {
+    const data = await createAxiosInstance().delete(
+      `/api/comment/deleteComment/${commentId}`
+    );
+
+    console.log(data, "from service");
+    return { data };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
