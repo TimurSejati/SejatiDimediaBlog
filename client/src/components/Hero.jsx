@@ -1,7 +1,21 @@
 import { FiSearch } from "react-icons/fi";
 import { images } from "../constants";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
   return (
     <section className="container flex flex-col items-center justify-center px-5 py-5 lg:flex-row">
       <div className="mt-10 lg:w-2/3">
@@ -20,9 +34,13 @@ const Hero = () => {
               className="placeholder:font-bold font-semibold text-dark-soft placeholder:text-[#959EAD] rounded-lg pl-12 pr-3 w-full py-3 focus:outline-none shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] md:py-4 border-none"
               placeholder="Temukan artikel"
               type="text"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="w-full px-5 py-3 font-semibold text-white rounded-lg bg-primary md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2">
+          <button
+            onClick={handleSearch}
+            className="w-full px-5 py-3 font-semibold text-white rounded-lg bg-primary md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2"
+          >
             Cari
           </button>
         </div>

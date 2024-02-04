@@ -2,6 +2,8 @@ import { Button, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
+import { getAllPosts } from "../../services/posts";
+import { getAllCategories } from "../../services/categories";
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -10,8 +12,8 @@ export default function Search() {
     category: "uncategorized",
   });
 
-  console.log(sidebarData);
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
@@ -20,41 +22,46 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const sortFromUrl = urlParams.get("sort");
-    const categoryFromUrl = urlParams.get("category");
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
-      setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-      });
-    }
+    const fetchData = async () => {
+      try {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get("searchTerm");
+        const sortFromUrl = urlParams.get("sort");
+        const categoryFromUrl = urlParams.get("category");
+        let newSidebarData = { ...sidebarData };
 
-    const fetchPosts = async () => {
-      setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
-      if (!res.ok) {
-        setLoading(false);
-        return;
-      }
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data.posts);
-        setLoading(false);
-        if (data.posts.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
+        if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
+          newSidebarData = {
+            ...newSidebarData,
+            searchTerm: searchTermFromUrl,
+            sort: sortFromUrl,
+            category: categoryFromUrl,
+          };
         }
+
+        setSidebarData(newSidebarData);
+
+        const fetchCategoriesResponse = await getAllCategories();
+        if (fetchCategoriesResponse.data) {
+          setCategories(fetchCategoriesResponse.data);
+        }
+
+        setLoading(true);
+        const searchQuery = urlParams.toString();
+        const fetchPostsResponse = await getAllPosts(searchQuery, "", "", "");
+
+        if (fetchPostsResponse.data.posts) {
+          setPosts(fetchPostsResponse.data.posts);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
-    fetchPosts();
-  }, [location.search]);
 
+    fetchData();
+  }, [location.search]);
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
       setSidebarData({ ...sidebarData, searchTerm: e.target.value });
@@ -130,29 +137,38 @@ export default function Search() {
               value={sidebarData.category}
               id="category"
             >
-              <option value="uncategorized">Uncategorized</option>
-              <option value="reactjs">React.js</option>
-              <option value="nextjs">Next.js</option>
-              <option value="javascript">JavaScript</option>
+              {categories?.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.title}
+                </option>
+              ))}
             </Select>
           </div>
           <Button type="submit" outline gradientDuoTone="purpleToPink">
-            Apply Filters
+            Cari
           </Button>
         </form>
       </div>
-      <div className="w-full">
+      <div className="flex flex-col w-full gap-8 p-3 mx-auto py-7">
         <h1 className="p-3 mt-5 text-3xl font-semibold border-gray-500 sm:border-b ">
-          Hasil Artikel:
+          Hasil Pencarian:
         </h1>
         <div className="flex flex-wrap gap-4 p-7">
           {!loading && posts.length === 0 && (
-            <p className="text-xl text-gray-500">No posts found.</p>
+            <p className="text-xl text-gray-500">
+              Postingan artikel tidak ditemukan
+            </p>
           )}
           {loading && <p className="text-xl text-gray-500">Loading...</p>}
           {!loading &&
             posts &&
-            posts.map((post) => <PostCard key={post._id} post={post} />)}
+            posts.map((post) => (
+              <PostCard
+                key={post._id}
+                post={post}
+                cls="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]"
+              />
+            ))}
           {showMore && (
             <button
               onClick={handleShowMore}

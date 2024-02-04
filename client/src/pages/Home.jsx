@@ -42,8 +42,6 @@ export default function Home() {
     setPage((prevPage) => prevPage + 1);
   };
 
-  console.log(data, "page");
-
   return (
     <div>
       <div className="px-3 mx-auto max-w-7xl">
