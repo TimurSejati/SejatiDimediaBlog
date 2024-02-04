@@ -23,6 +23,9 @@ import {
 import { useEffect } from "react";
 import Editor from "../components/editor/Editor";
 import toast from "react-hot-toast";
+import MultiSelectTagDropdown from "../components/MultiSelectTagDropdown";
+import { filterCategories } from "../../utils/multiSelectTagUtils";
+import { getAllCategories } from "../../services/categories";
 
 const CreatePost2 = () => {
   const { slug } = useParams();
@@ -42,6 +45,11 @@ const CreatePost2 = () => {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+
+  const promiseOptions = async (inputValue) => {
+    const { data: categoriesData } = await getAllCategories();
+    return filterCategories(inputValue, categoriesData);
+  };
 
   const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
     useMutation({
@@ -108,6 +116,7 @@ const CreatePost2 = () => {
     dataPost.append("caption", caption);
     dataPost.append("slug", postSlug);
     dataPost.append("photo", initialPhoto);
+    dataPost.append("categories", JSON.stringify(categories));
     dataPost.append("body", JSON.stringify(body));
 
     mutateCreatePost({
@@ -236,6 +245,17 @@ const CreatePost2 = () => {
                 setPostSlug(e.target.value.replace(/\s+/g, "-").toLowerCase())
               }
               placeholder="post slug"
+            />
+          </div>
+          <div className="mt-2 mb-5">
+            <label className="d-label">
+              <span className="d-label-text">Categories</span>
+            </label>
+            <MultiSelectTagDropdown
+              loadOptions={promiseOptions}
+              onChange={(newValue) =>
+                setCategories(newValue.map((item) => item.value))
+              }
             />
           </div>
           {/* <div className="mt-2 mb-5">

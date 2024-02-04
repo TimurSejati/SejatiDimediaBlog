@@ -8,7 +8,9 @@ export const getAllPosts = async (
 ) => {
   try {
     const { data } = await createAxiosInstance().get(
-      `/api/post2?userId=${userId}&searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`
+      `/api/post2?userId=${userId}&searchKeyword=${searchKeyword}&page=${page}&limit=${
+        limit * page
+      }`
     );
 
     return { data };

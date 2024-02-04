@@ -23,23 +23,23 @@ export default function DashPosts() {
     setUserPosts(data);
   }, [data]);
 
-  const handleShowMore = async () => {
-    const startIndex = userPosts.length;
-    try {
-      const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
-      );
-      const data = await res.json();
-      if (res.ok) {
-        setUserPosts((prev) => [...prev, ...data.posts]);
-        if (data.posts.length < 9) {
-          setShowMore(false);
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const handleShowMore = async () => {
+  //   const startIndex = userPosts.length;
+  //   try {
+  //     const res = await fetch(
+  //       `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+  //     );
+  //     const data = await res.json();
+  //     if (res.ok) {
+  //       setUserPosts((prev) => [...prev, ...data.posts]);
+  //       if (data.posts.length < 9) {
+  //         setShowMore(false);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   const handleDeletePost = async () => {
     setShowModal(false);
@@ -60,7 +60,7 @@ export default function DashPosts() {
 
   return (
     <div className="w-3/4 p-3 overflow-x-scroll table-auto md:mx-auto scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser?.isAdmin && data?.data?.length > 0 ? (
+      {currentUser?.isAdmin && data?.data?.posts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>
@@ -73,7 +73,7 @@ export default function DashPosts() {
                 <span>Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            {userPosts?.data?.map((post) => (
+            {userPosts?.data?.posts?.map((post) => (
               <Table.Body key={post._id} className="divide-y">
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell>
@@ -131,7 +131,7 @@ export default function DashPosts() {
           </Table>
           {showMore && (
             <button
-              onClick={handleShowMore}
+              // onClick={handleShowMore}
               className="self-center w-full text-sm text-teal-500 py-7"
             >
               Show more

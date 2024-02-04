@@ -104,11 +104,13 @@ export default function PostPage() {
           postSlug={slug}
         /> */}
         <CommentSection postId={data?.post?._id} />
-        <SuggestedPosts
-          header="Postingan Lain"
-          relatedPosts={data?.relatedPosts}
-          className="mt-8 lg:mt-12"
-        />
+        {data?.relatedPosts?.length > 0 && (
+          <SuggestedPosts
+            header="Postingan Serupa"
+            relatedPosts={data?.relatedPosts}
+            className="mt-8 lg:mt-12"
+          />
+        )}
       </article>
       <div>
         {/* <div className="mt-7">

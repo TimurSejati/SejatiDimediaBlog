@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const createPost = async (req, res, next) => {
   try {
-    console.log(req.body.body);
     const post = new Post2({
       title: req.body.title,
       caption: req.body.caption,
@@ -13,6 +12,7 @@ const createPost = async (req, res, next) => {
       //   type: "doc",
       //   content: [],
       // },
+      categories: JSON.parse(req.body.categories),
       photo: req.body.photo,
       user: req.user._id,
     });
@@ -145,7 +145,25 @@ const getAllPost = async (req, res, next) => {
         },
       ]);
 
-    res.json(posts);
+    // Check if there is a next page
+    const nextPagePosts = await Post2.find({
+      ...(req.query.userId && { user: req.query.userId }),
+      ...(req.query.postId && { _id: req.query.postId }),
+      ...(req.query.searchTerm && {
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex + limit)
+      .limit(1); // Fetch one additional post to check if there is a next page
+
+    const hasNextPage = nextPagePosts.length > 0;
+
+    // res.json(posts);
+    res.json({ posts, hasNextPage });
   } catch (error) {
     next(error);
   }
