@@ -23,6 +23,12 @@ import {
 import { useEffect } from "react";
 import Editor from "../components/editor/Editor";
 import toast from "react-hot-toast";
+import MultiSelectTagDropdown from "../components/MultiSelectTagDropdown";
+import { getAllCategories } from "../../services/categories";
+import {
+  categoryToOption,
+  filterCategories,
+} from "../../utils/multiSelectTagUtils";
 
 const UpdatePost2 = () => {
   const { slug } = useParams();
@@ -49,6 +55,11 @@ const UpdatePost2 = () => {
     refetchOnWindowFocus: false,
   });
 
+  const promiseOptions = async (inputValue) => {
+    const { data: categoriesData } = await getAllCategories();
+    return filterCategories(inputValue, categoriesData);
+  };
+
   const {
     mutate: mutateUpdatePostDetail,
     isLoading: isLoadingUpdatePostDetail,
@@ -72,10 +83,10 @@ const UpdatePost2 = () => {
   });
 
   useEffect(() => {
-    setInitialPhoto(data?.photo);
-    // setCategories(data?.categories.map((item) => item._id));
-    setTitle(data?.title);
-    setCaption(data?.caption);
+    setInitialPhoto(data?.post?.photo);
+    setCategories(data?.post?.categories.map((item) => item._id));
+    setTitle(data?.post?.title);
+    setCaption(data?.post?.caption);
     // setTags(data?.tags);
   }, [data]);
 
@@ -134,6 +145,7 @@ const UpdatePost2 = () => {
     updatedData.append("slug", postSlug);
     updatedData.append("photo", initialPhoto);
     updatedData.append("body", JSON.stringify(body));
+    updatedData.append("categories", JSON.stringify(categories));
 
     mutateUpdatePostDetail({
       updatedData,
@@ -223,7 +235,7 @@ const UpdatePost2 = () => {
             )}
 
             <div className="flex gap-2 mt-4">
-              {data?.categories?.map((category) => (
+              {data?.post?.categories?.map((category) => (
                 <Link
                   key={category?._id}
                   to={`/blog?category=${category?.name}`}
@@ -271,6 +283,19 @@ const UpdatePost2 = () => {
                 placeholder="post slug"
               />
             </div>
+            <div className="mt-2 mb-5">
+              <label className="d-label">
+                <span className="d-label-text">Categories</span>
+              </label>
+              <MultiSelectTagDropdown
+                loadOptions={promiseOptions}
+                defaultValue={data?.post?.categories.map(categoryToOption)}
+                onChange={(newValue) =>
+                  setCategories(newValue.map((item) => item.value))
+                }
+              />
+            </div>
+
             {/* <div className="mt-2 mb-5">
               <label className="d-label">
                 <span className="d-label-text">categories</span>
@@ -306,7 +331,7 @@ const UpdatePost2 = () => {
             <div className="w-full mt-5 mb-10">
               {isPostDataLoaded && (
                 <Editor
-                  content={data?.body}
+                  content={data?.post?.body}
                   editable={true}
                   onDataChange={(data) => {
                     setBody(data);

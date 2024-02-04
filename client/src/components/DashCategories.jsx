@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useQuery } from "@tanstack/react-query";
-import { deletePost, getAllPosts } from "../../services/posts";
 import toast from "react-hot-toast";
 import {
   createCategory,
@@ -28,7 +27,7 @@ export default function DashCategories() {
   });
 
   useEffect(() => {
-    setCategories(data.data);
+    setCategories(data?.data);
   }, [data]);
 
   const handleDeletePost = async () => {

@@ -69,16 +69,16 @@ export default function PostPage() {
       </div>
     );
   return (
-    <section className="container flex flex-col max-w-5xl px-5 py-5 mx-auto lg:flex-row lg:gap-x-5 lg:items-start">
+    <section className="container flex flex-col px-5 py-5 mx-auto max-w-7xl lg:flex-row lg:gap-x-5 lg:items-start">
       <article className="flex-1">
         <BreadCrumbs data={breadCrumbsData} />
         <img
           className="w-full rounded-xl"
-          src={data?.photo}
-          alt={data?.title}
+          src={data?.post?.photo}
+          alt={data?.post?.title}
         />
         <div className="flex gap-2 mt-4">
-          {data?.categories?.map((category) => (
+          {data?.post?.categories?.map((category) => (
             <Link
               key={category.id}
               to={`/blog?category=${category.name}`}
@@ -89,12 +89,12 @@ export default function PostPage() {
           ))}
         </div>
         <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
-          {data?.title}
+          {data?.post?.title}
         </h1>
         <div className="w-full"></div>
         <div className="w-full">
           {!isLoading && !isError && (
-            <Editor content={data?.body} editable={false} />
+            <Editor content={data?.post?.body} editable={false} />
           )}
         </div>
         {/* <CommentsContainer
@@ -103,11 +103,11 @@ export default function PostPage() {
           logginedUserId={userState?.userInfo?._id}
           postSlug={slug}
         /> */}
-        <CommentSection postId={data?._id} />
+        <CommentSection postId={data?.post?._id} />
         <SuggestedPosts
           header="Postingan Lain"
-          tags={data?.data?.tags}
-          className="mt-8 lg:mt-12 lg:max-w-xs"
+          relatedPosts={data?.relatedPosts}
+          className="mt-8 lg:mt-12"
         />
       </article>
       <div>

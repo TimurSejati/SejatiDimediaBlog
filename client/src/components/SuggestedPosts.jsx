@@ -1,41 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PostCard from "./PostCard";
 
-const SuggestedPosts = ({ className, header, tags }) => {
+const SuggestedPosts = ({ className, header, relatedPosts }) => {
   return (
     <div className={`w-full ${className}`}>
       <h2 className="font-medium font-roboto text-dark-hard md:text-xl">
         {header}
       </h2>
-      <div className="grid mt-5 gap-y-5 md:grid-cols-2 md:gap-x-5 lg:grid-cols-1">
-        {/* {posts.map((item) => (
-          <div
-            key={item._id}
-            className="flex items-center space-x-3 flex-nowrap"
-          >
-            <img
-              className="object-cover w-1/5 rounded-lg aspect-square"
-              src={
-                item?.photo
-                // ? stables.UPLOAD_FOLDER_BASE_URL + item?.photo
-                // : images.samplePostImage
-              }
-              alt={item.title}
-            />
-            <div className="text-sm font-medium font-roboto text-dark-hard">
-              <h3 className="text-sm font-medium font-roboto text-dark-hard md:text-base lg:text-lg">
-                <Link to={`/blog/${item.slug}`}>{item.title}</Link>
-              </h3>
-              <span className="text-xs opacity-60">
-                {new Date(item.createdAt).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </span>
-            </div>
-          </div>
-        ))} */}
+      <div className="flex flex-wrap pb-10 mt-5 md:gap-x-5 gap-y-5">
+        {relatedPosts?.map((post) => (
+          <PostCard
+            key={post._id}
+            post={post}
+            cls="w-full lg:w-[calc(32%-20px)]"
+          />
+        ))}
       </div>
       {/* <h2 className="mt-8 font-medium font-roboto text-dark-hard md:text-xl">
         Tags

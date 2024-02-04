@@ -40,7 +40,7 @@ const updatePost = async (req, res, next) => {
         $set: {
           title: req.body.title,
           caption: req.body.caption,
-          categories: req.body.categories,
+          categories: JSON.parse(req.body.categories),
           photo: req.body.photo,
           tags: req.body.tags,
           body: JSON.parse(req.body.body),
@@ -78,6 +78,10 @@ const getPost = async (req, res, next) => {
   try {
     const post = await Post2.findOne({ slug: req.params.slug }).populate([
       {
+        path: "categories",
+        select: ["title"],
+      },
+      {
         path: "user",
         select: ["profilePicture", "username"],
       },
@@ -88,7 +92,25 @@ const getPost = async (req, res, next) => {
       return next(error);
     }
 
-    return res.json(post);
+    // Find related posts by categories
+    const relatedPosts = await Post2.find({
+      categories: { $in: post.categories.map((category) => category._id) },
+      _id: { $ne: post._id }, // Exclude the current post
+    })
+      .limit(3)
+      .populate([
+        {
+          path: "categories",
+          select: ["title"],
+        },
+        {
+          path: "user",
+          select: ["profilePicture", "username"],
+        },
+      ]);
+
+    // return res.json(post);
+    return res.json({ post, relatedPosts });
   } catch (error) {
     next(error);
   }
@@ -116,6 +138,10 @@ const getAllPost = async (req, res, next) => {
         {
           path: "user",
           select: ["profilePicture", "username"],
+        },
+        {
+          path: "categories",
+          select: ["title"],
         },
       ]);
 

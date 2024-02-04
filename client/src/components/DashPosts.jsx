@@ -96,7 +96,16 @@ export default function DashPosts() {
                       {post.title}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{post.categories}</Table.Cell>
+                  <Table.Cell>
+                    {post.categories.map((category) => (
+                      <small
+                        className="p-1.5 mr-1 text-xs text-white rounded-md bg-primary"
+                        key={category._id}
+                      >
+                        {category.title}
+                      </small>
+                    ))}
+                  </Table.Cell>
                   <Table.Cell>
                     <span
                       onClick={() => {
