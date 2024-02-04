@@ -16,7 +16,6 @@ router
   .route("/:slug")
   .put(authGuard, adminGuard, updatePost)
   .delete(authGuard, adminGuard, deletePost)
-  .delete(authGuard, adminGuard, deletePost)
   .get(getPost);
 
 export default router;

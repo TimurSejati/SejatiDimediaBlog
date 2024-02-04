@@ -8,6 +8,7 @@ import {
   addComment,
   deleteComment,
   getAllComments,
+  likeComment,
 } from "../../services/comments";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -51,23 +52,6 @@ export default function CommentSection({ postId }) {
         setComment("");
         setComments([res.data.data, ...comments]);
       }
-      // const res = await fetch("/api/comment/create", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     content: comment,
-      //     postId,
-      //     userId: currentUser._id,
-      //   }),
-      // });
-      // const data = await res.json();
-      // if (res.ok) {
-      //   setComment("");
-      //   setCommentError(null);
-      //   setComments([data, ...comments]);
-      // }
     } catch (error) {
       setCommentError(error.message);
     }
@@ -94,18 +78,16 @@ export default function CommentSection({ postId }) {
         navigate("/sign-in");
         return;
       }
-      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
-        method: "PUT",
-      });
-      if (res.ok) {
-        const data = await res.json();
+
+      const res = await likeComment({ commentId });
+      if (res.data.status == 200) {
         setComments(
           comments.map((comment) =>
             comment._id === commentId
               ? {
                   ...comment,
-                  likes: data.likes,
-                  numberOfLikes: data.likes.length,
+                  likes: res.data.data.likes,
+                  numberOfLikes: res.data.data.likes.length,
                 }
               : comment
           )

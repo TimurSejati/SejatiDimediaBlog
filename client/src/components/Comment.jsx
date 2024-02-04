@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Button, Textarea } from "flowbite-react";
+import { editComment } from "../../services/comments";
 // import { set } from "mongoose";
 
 export default function Comment({ comment, onLike, onEdit, onDelete }) {
@@ -17,19 +18,27 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
 
   const handleSave = async () => {
     try {
-      const res = await fetch(`/api/comment/editComment/${comment._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: editedContent,
-        }),
+      const res = await editComment({
+        commentId: comment._id,
+        dataEditComment: { content: editedContent },
       });
-      if (res.ok) {
+      if (res.data.status == 200) {
         setIsEditing(false);
         onEdit(comment, editedContent);
       }
+      //   const res = await fetch(`/api/comment/editComment/${comment._id}`, {
+      //     method: "PUT",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       content: editedContent,
+      //     }),
+      //   });
+      //   if (res.ok) {
+      //     setIsEditing(false);
+      //     onEdit(comment, editedContent);
+      //   }
     } catch (error) {
       console.log(error.message);
     }

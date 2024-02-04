@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
-const PostCategoriesSchema = new Schema(
+const CategorySchema = new Schema(
   {
     title: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-const Post = model("Post", PostCategoriesSchema);
-export default Post;
+const Category = model("Category", CategorySchema);
+export default Category;

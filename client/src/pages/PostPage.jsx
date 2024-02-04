@@ -17,6 +17,7 @@ import Text from "@tiptap/extension-text";
 import parse from "html-react-parser";
 import Editor from "../components/editor/Editor";
 import { useSelector } from "react-redux";
+import SuggestedPosts from "../components/SuggestedPosts";
 
 export default function PostPage() {
   const { blogSlug } = useParams();
@@ -103,24 +104,23 @@ export default function PostPage() {
           postSlug={slug}
         /> */}
         <CommentSection postId={data?._id} />
+        <SuggestedPosts
+          header="Postingan Lain"
+          tags={data?.data?.tags}
+          className="mt-8 lg:mt-12 lg:max-w-xs"
+        />
       </article>
-      {/* <div>
-            <SuggestedPosts
-              header="Latest Article"
-              posts={postsData?.data}
-              tags={data?.tags}
-              className="mt-8 lg:mt-0 lg:max-w-xs"
-            />
-            <div className="mt-7">
-              <h2 className="mb-4 font-medium font-roboto text-dark-hard md:text-xl">
-                Share on:
-              </h2>
-              <SocialShareButtons
-                url={encodeURI(window.location.href)}
-                title={encodeURIComponent(data?.title)}
-              />
-            </div>
-          </div> */}
+      <div>
+        {/* <div className="mt-7">
+          <h2 className="mb-4 font-medium font-roboto text-dark-hard md:text-xl">
+            Share on:
+          </h2>
+          <SocialShareButtons
+            url={encodeURI(window.location.href)}
+            title={encodeURIComponent(data?.title)}
+          />
+        </div> */}
+      </div>
     </section>
   );
 }
