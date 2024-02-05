@@ -13,11 +13,18 @@ export const getAllCategories = async () => {
   }
 };
 
-export const createCategory = async (categoryData) => {
+export const createCategory = async (token, categoryData) => {
   try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     const data = await createAxiosInstance().post(
       `/api/category`,
-      categoryData
+      categoryData,
+      config
     );
 
     return { data };
@@ -40,11 +47,18 @@ export const deleteCategory = async (id) => {
   }
 };
 
-export const updateCategory = async (id, dataEdit) => {
+export const updateCategory = async (token, id, dataEdit) => {
   try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     const data = await createAxiosInstance().put(
       `/api/category/${id}`,
-      dataEdit
+      dataEdit,
+      config
     );
 
     return { data };

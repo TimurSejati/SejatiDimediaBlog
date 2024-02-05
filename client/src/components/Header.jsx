@@ -9,14 +9,81 @@ import { useEffect, useState } from "react";
 import createAxiosInstance from "../../utils/axiosInstance";
 import { images } from "../constants";
 
-export default function Header() {
+const NavItem = ({ item }) => {
   const path = useLocation().pathname;
+  console.log(path, "path");
+  const [dropdown, setDropdown] = useState(false);
+
+  const toggleDropdownHandler = () => {
+    setDropdown((curState) => {
+      return !curState;
+    });
+  };
+
+  return (
+    <li className="relative group">
+      {item.type === "link" ? (
+        <>
+          {/* `${path == "/blogs" ? "text-primary font-semibold" : ""}` */}
+          <Link
+            to={item.href}
+            className={`px-4 py-2  ${
+              path === item.href ? "text-primary font-bold" : ""
+            }`}
+          >
+            {item.name}
+          </Link>
+          <span className="cursor-pointer text-blue-500 absolute transition-all duration-500 font-bold right-0 top-0 group-hover:right-[90%] opacity-0 group-hover:opacity-100">
+            /
+          </span>
+        </>
+      ) : (
+        <div className="flex flex-col items-center">
+          <button
+            className="flex items-center px-4 py-2 gap-x-1"
+            onClick={toggleDropdownHandler}
+          >
+            <span>{item.name}</span>
+            {/* <MdKeyboardArrowDown /> */}
+          </button>
+          <div
+            className={`${
+              dropdown ? "block" : "hidden"
+            } lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}
+          >
+            <ul className="flex flex-col overflow-hidden text-center rounded-lg shadow-lg bg-dark-soft lg:bg-transparent">
+              {item.items.map((page, index) => (
+                <Link
+                  key={index}
+                  to={page.href}
+                  className="px-4 py-2 text-white hover:bg-dark-hard hover:text-white lg:text-dark-soft"
+                >
+                  {page.title}
+                </Link>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </li>
+  );
+};
+
+export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [dropdown, setDropdown] = useState(false);
+
+  const toggleDropdownHandler = () => {
+    setDropdown((curState) => {
+      return !curState;
+    });
+  };
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -25,6 +92,21 @@ export default function Header() {
       setSearchTerm(searchTermFromUrl);
     }
   }, [location.search]);
+
+  const navItemsInfo = [
+    { name: "Beranda", type: "link", href: "/" },
+    { name: "Artikel", type: "link", href: "/search" },
+    // {
+    //   name: "Pages",
+    //   type: "dropdown",
+    //   items: [
+    //     { title: "About us", href: "/about" },
+    //     { title: "Contact us", href: "/contact" },
+    //   ],
+    // },
+    // { name: "Pricing", type: "link", href: "/pricing" },
+    // { name: "Faq", type: "link", href: "/faq" },
+  ];
 
   const handleSignout = async () => {
     try {
@@ -104,46 +186,20 @@ export default function Header() {
           </Dropdown>
         ) : (
           <Link to="/sign-in">
-            <Button gradientDuoTone="purpleToBlue" outline>
+            <button className="px-4 py-1.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white">
               Sign In
-            </Button>
+            </button>
+            {/* <Button gradientDuoTone="purpleToBlue" outline>
+              Sign In
+            </Button> */}
           </Link>
         )}
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link
-          className={`${
-            path == "/" ? "text-primary font-semibold" : ""
-          } hover:text-primary`}
-          // active={path === "/"}
-          as={"div"}
-        >
-          <Link to="/">Home</Link>
-        </Navbar.Link>
-        <Navbar.Link
-          className={`${path == "/blogs" ? "text-primary font-semibold" : ""}`}
-          // active={path === "/blogs"}
-          as={"div"}
-        >
-          <Link to="/blogs">Blogs</Link>
-        </Navbar.Link>
-        {/* <Navbar.Link
-          className={`${path == "/about" ? "text-primary font-semibold" : ""}`}
-          // active={path === "/about"}
-          as={"div"}
-        >
-          <Link to="/about">About</Link>
-        </Navbar.Link>
-        <Navbar.Link
-          className={`${
-            path == "/projects" ? "text-primary font-semibold" : ""
-          }`}
-          active={path === "/projects"}
-          as={"div"}
-        >
-          <Link to="/projects">Projects</Link>
-        </Navbar.Link> */}
+        {navItemsInfo.map((item) => (
+          <NavItem key={item.name} item={item} />
+        ))}
       </Navbar.Collapse>
     </Navbar>
   );

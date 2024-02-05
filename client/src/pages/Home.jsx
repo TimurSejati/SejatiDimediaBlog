@@ -77,12 +77,19 @@ export default function Home() {
                     ))}
                   </div>
                   {data?.data?.hasNextPage && (
+                    // <button
+                    //   // to={"/search"}
+                    //   onClick={loadMorePosts}
+                    //   className="flex items-center px-6 py-3 mx-auto font-bold border-2 rounded-lg gap-x-2 text-primary border-primary"
+                    // >
+                    //   Load More
+                    // </button>
+
                     <button
-                      // to={"/search"}
                       onClick={loadMorePosts}
-                      className="flex items-center px-6 py-3 mx-auto font-bold border-2 rounded-lg gap-x-2 text-primary border-primary"
+                      className="px-4 py-2 mx-auto transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
                     >
-                      Load More
+                      Muat Lebih Banyak
                     </button>
                   )}
                 </div>

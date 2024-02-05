@@ -47,7 +47,9 @@ export default function DashCategories() {
   };
 
   const handleCreateCategory = async () => {
-    const res = await createCategory({ title: categoryTitle });
+    const res = await createCategory(currentUser.token, {
+      title: categoryTitle,
+    });
 
     if (res.data.status == 200) {
       toast.success("Berhasil menambahkan category");
@@ -58,7 +60,9 @@ export default function DashCategories() {
   };
 
   const handleEditCategory = async () => {
-    const res = await updateCategory(idToAction, { title: categoryTitle });
+    const res = await updateCategory(currentUser.token, idToAction, {
+      title: categoryTitle,
+    });
     if (res.data.status == 200) {
       toast.success("Berhasil mengubah category");
       setCategoryTitle("");

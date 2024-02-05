@@ -39,10 +39,16 @@ const Hero = () => {
           </div>
           <button
             onClick={handleSearch}
-            className="w-full px-5 py-3 font-semibold text-white rounded-lg bg-primary md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2"
+            className="w-full px-5 py-3 font-semibold text-white transition duration-75 rounded-lg bg-primary md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2 ext-primary hover:bg-blue-500"
           >
             Cari
           </button>
+          {/* <button
+            onClick={handleSearch}
+            className="px-4 py-1.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+          >
+            Cari
+          </button> */}
         </div>
         <div className="flex flex-col mt-4 lg:flex-row lg:items-start lg:flex-nowrap lg:gap-x-4 lg:mt-7">
           <span className="mt-2 italic font-semibold text-dark-light lg:mt-4 lg:text-sm xl:text-base">

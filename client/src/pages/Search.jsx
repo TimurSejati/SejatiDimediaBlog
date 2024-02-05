@@ -9,7 +9,7 @@ export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "uncategorized",
+    category: "",
   });
 
   const [posts, setPosts] = useState([]);
@@ -71,7 +71,7 @@ export default function Search() {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
+      const category = e.target.value || "";
       setSidebarData({ ...sidebarData, category });
     }
   };
@@ -110,33 +110,34 @@ export default function Search() {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="border-b border-gray-500 p-7 md:border-r md:min-h-screen">
-        <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-          <div className="flex items-center gap-2">
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+          <div className="items-center gap-1">
             <label className="font-semibold whitespace-nowrap">
               Kata kunci:
             </label>
             <TextInput
-              placeholder="Search..."
+              placeholder="Masukan Pencarian..."
               id="searchTerm"
               type="text"
               value={sidebarData.searchTerm}
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="items-center gap-1">
             <label className="font-semibold">Urutan:</label>
             <Select onChange={handleChange} value={sidebarData.sort} id="sort">
-              <option value="desc">Latest</option>
-              <option value="asc">Oldest</option>
+              <option value="desc">Terbaru</option>
+              <option value="asc">Terlama</option>
             </Select>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="items-center gap-1">
             <label className="font-semibold">Kategori:</label>
             <Select
               onChange={handleChange}
               value={sidebarData.category}
               id="category"
             >
+              <option value="">-</option>
               {categories?.map((category) => (
                 <option key={category._id} value={category._id}>
                   {category.title}
@@ -144,9 +145,15 @@ export default function Search() {
               ))}
             </Select>
           </div>
-          <Button type="submit" outline gradientDuoTone="purpleToPink">
+          {/* <Button outline gradientDuoTone="purpleToPink">
             Cari
-          </Button>
+          </Button> */}
+          <button
+            type="submit"
+            className="px-4 py-1.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+          >
+            Cari
+          </button>
         </form>
       </div>
       <div className="flex flex-col w-full gap-8 p-3 mx-auto py-7">

@@ -12,12 +12,12 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(verifyToken, adminGuard, createCategory)
-  .get(verifyToken, adminGuard, getAllCategories);
+  .post(authGuard, adminGuard, createCategory)
+  .get(getAllCategories);
 
 router
   .route("/:categoryId")
-  .put(verifyToken, adminGuard, updateCategory)
-  .delete(verifyToken, adminGuard, deleteCategory);
+  .put(authGuard, adminGuard, updateCategory)
+  .delete(authGuard, adminGuard, deleteCategory);
 
 export default router;
