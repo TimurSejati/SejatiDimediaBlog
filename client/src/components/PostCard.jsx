@@ -1,5 +1,6 @@
 import { BsCheckLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { HiTag } from "react-icons/hi";
 
 export default function PostCard({ post, cls }) {
   return (
@@ -15,14 +16,29 @@ export default function PostCard({ post, cls }) {
       </Link>
 
       <div className="p-5">
-        <h2 className="font-roboto font-bold text-xl text-dark-soft md:text-2xl lg:text-[28px]">
+        {post?.categories.map((category) => (
+          <span
+            className="px-2 py-1 mr-2 font-medium rounded-md text-primary bg-primary bg-opacity-10"
+            key={category._id}
+          >
+            {category.title}
+          </span>
+        ))}
+        <h2 className="font-roboto font-semibold text-xl text-dark-soft md:text-2xl lg:text-[28px] mt-2">
           {post?.title}
         </h2>
-        <p className="mt-3 text-sm text-dark-light md:text-lg">
+        <span className="text-xs font-medium text-dark-light md:text-sm">
+          {new Date(post?.createdAt).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </span>
+        <p className="mt-4 text-sm text-gray-400 md:text-lg">
           {/* Majority of peole will work in jobs that don’t exist today. */}
           {post?.caption}
         </p>
-        <div className="flex items-center justify-between mt-6 flex-nowrap">
+        <div className="flex items-center justify-between mt-4 flex-nowrap">
           <div className="flex items-center gap-x-2 md:gap-x-2.5">
             <img
               src={post?.user.profilePicture}
@@ -33,23 +49,26 @@ export default function PostCard({ post, cls }) {
               <h4 className="text-sm italic font-bold taxt-bg-dark-soft">
                 {post?.user.username}
               </h4>
-              <div className="flex items-center gap-x-2">
-                <span className="bg-[#36B37E] w-fit bg-opacity-20 p-1.5 rounded-full">
+              {post?.tags && (
+                <div className="flex items-center">
+                  {post?.tags.map((tag) => (
+                    <div className="flex items-center mr-2" key={tag._id}>
+                      <HiTag className="mr-1 text-opacity-80 text-primary" />
+                      <div>
+                        <span className="text-gray-500">{tag.title}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {/* <span className="bg-[#36B37E] w-fit bg-opacity-20 p-1.5 rounded-full">
                   <BsCheckLg className="w-3 h-3 text-[#36B37E]" />
                 </span>
                 <span className="text-xs italic text-dark-light md:text-sm">
                   Verified Writer
-                </span>
-              </div>
+                </span> */}
+                </div>
+              )}
             </div>
           </div>
-          <span className="text-sm italic font-bold text-dark-light md:text-base">
-            {new Date(post?.createdAt).toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
-          </span>
         </div>
       </div>
     </div>

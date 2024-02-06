@@ -17,7 +17,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="container flex flex-col items-center justify-center px-5 py-5 lg:flex-row">
+    <section className="flex flex-col items-center justify-center px-5 py-5  lg:flex-row">
       <div className="mt-10 lg:w-2/3">
         <h1 className="text-3xl font-bold text-center font-roboto text-dark-soft md:text-5xl lg:text-4xl xl:text-5x">
           Temukan inspirasi dan wawasan dalam setiap baris kata.
