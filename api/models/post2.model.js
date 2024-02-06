@@ -14,6 +14,7 @@ const PostSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: "User" },
     tags: { type: [String] },
     categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
+    tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   },
   { timestamps: true }
 );

@@ -1,8 +1,8 @@
 import createAxiosInstance from "../utils/axiosInstance";
 
-export const getAllCategories = async () => {
+export const getAllTags = async () => {
   try {
-    const { data } = await createAxiosInstance().get(`/api/category`);
+    const { data } = await createAxiosInstance().get(`/api/tag`);
 
     return { data };
   } catch (error) {
@@ -12,39 +12,15 @@ export const getAllCategories = async () => {
   }
 };
 
-export const createCategory = async (token, categoryData) => {
-  try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const data = await createAxiosInstance().post(
-      `/api/category`,
-      categoryData,
-      config
-    );
-
-    return { data };
-  } catch (error) {
-    if (error.response && error.response.data.message)
-      throw new Error(error.response.data.message);
-    throw new Error(error.message);
-  }
-};
-
-export const deleteCategory = async (token, id) => {
+export const createTag = async (token, tagData) => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const data = await createAxiosInstance().delete(
-      `/api/category/${id}`,
-      config
-    );
+
+    const data = await createAxiosInstance().post(`/api/tag`, tagData, config);
 
     return { data };
   } catch (error) {
@@ -54,7 +30,24 @@ export const deleteCategory = async (token, id) => {
   }
 };
 
-export const updateCategory = async (token, id, dataEdit) => {
+export const deleteTag = async (token, id) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const data = await createAxiosInstance().delete(`/api/tag/${id}`, config);
+
+    return { data };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const updateTag = async (token, id, dataEdit) => {
   try {
     const config = {
       headers: {
@@ -63,7 +56,7 @@ export const updateCategory = async (token, id, dataEdit) => {
     };
 
     const data = await createAxiosInstance().put(
-      `/api/category/${id}`,
+      `/api/tag/${id}`,
       dataEdit,
       config
     );

@@ -6,38 +6,38 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import {
-  createCategory,
-  deleteCategory,
-  getAllCategories,
-  updateCategory,
-} from "../../services/categories";
+  createTag,
+  deleteTag,
+  getAllTags,
+  updateTag,
+} from "../../services/tags";
 
-export default function DashCategories() {
+export default function DashTags() {
   const { currentUser } = useSelector((state) => state.user);
-  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [idToAction, setIdToAction] = useState("");
-  const [categoryTitle, setCategoryTitle] = useState("");
+  const [tagTitle, setTagTitle] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
 
   let { data } = useQuery({
-    queryFn: () => getAllCategories(),
-    queryKey: ["categories"],
+    queryFn: () => getAllTags(),
+    queryKey: ["tags"],
   });
 
   useEffect(() => {
-    setCategories(data?.data);
+    setTags(data?.data);
   }, [data]);
 
   const handleDeletePost = async () => {
     setShowModal(false);
     try {
-      let res = await deleteCategory(currentUser.token, idToAction);
+      let res = await deleteTag(currentUser.token, idToAction);
       if (res.data.status === 200) {
         toast.success(res.data.data.message);
         // remove logic
-        setCategories((prevData) =>
+        setTags((prevData) =>
           prevData?.filter((item) => item._id !== idToAction)
         );
       }
@@ -46,32 +46,32 @@ export default function DashCategories() {
     }
   };
 
-  const handleCreateCategory = async () => {
-    const res = await createCategory(currentUser.token, {
-      title: categoryTitle,
+  const handleCreateTag = async () => {
+    const res = await createTag(currentUser.token, {
+      title: tagTitle,
     });
 
     if (res.data.status == 200) {
-      toast.success("Berhasil menambahkan category");
-      setCategoryTitle("");
-      navigate(`/dashboard?tab=categories`, { replace: true });
-      setCategories([...categories, res.data.data]);
+      toast.success("Berhasil menambahkan tag");
+      setTagTitle("");
+      navigate(`/dashboard?tab=tags`, { replace: true });
+      setTags([...tags, res.data.data]);
     }
   };
 
-  const handleEditCategory = async () => {
-    const res = await updateCategory(currentUser.token, idToAction, {
-      title: categoryTitle,
+  const handleEditTag = async () => {
+    const res = await updateTag(currentUser.token, idToAction, {
+      title: tagTitle,
     });
     if (res.data.status == 200) {
-      toast.success("Berhasil mengubah category");
-      setCategoryTitle("");
-      setCategories((prevCategories) => {
-        return prevCategories.map((category) => {
-          if (category._id === idToAction) {
-            return { ...category, title: categoryTitle };
+      toast.success("Berhasil mengubah tag");
+      setTagTitle("");
+      setTags((prevTags) => {
+        return prevTags.map((tag) => {
+          if (tag._id === idToAction) {
+            return { ...tag, title: tagTitle };
           }
-          return category;
+          return tag;
         });
       });
       setIsEdit(false);
@@ -80,26 +80,26 @@ export default function DashCategories() {
 
   return (
     <div className="w-3/4 p-3 overflow-x-scroll table-auto md:mx-auto scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser?.isAdmin && categories?.length > 0 ? (
+      {currentUser?.isAdmin && tags?.length > 0 ? (
         <>
           <div className="flex gap-2">
             <TextInput
               type="text"
               id="username"
-              placeholder="Category"
-              value={categoryTitle}
-              onChange={(e) => setCategoryTitle(e.target.value)}
+              placeholder="Tag"
+              value={tagTitle}
+              onChange={(e) => setTagTitle(e.target.value)}
             />
             {isEdit && (
               <Link
-                onClick={handleEditCategory}
+                onClick={handleEditTag}
                 className="p-2 text-white rounded-md hover:underline bg-primary"
               >
                 <span>Ubah</span>
               </Link>
             )}
             <Link
-              onClick={handleCreateCategory}
+              onClick={handleCreateTag}
               className="p-2 text-white rounded-md hover:underline bg-primary"
             >
               <span>Tambahkan</span>
@@ -108,24 +108,24 @@ export default function DashCategories() {
           <Table hoverable className="mt-5 shadow-md">
             <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
+              <Table.HeadCell>Tag</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>
                 <span>Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            {categories?.map((category) => (
-              <Table.Body key={category._id} className="divide-y">
+            {tags?.map((tag) => (
+              <Table.Body key={tag._id} className="divide-y">
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell>
-                    {new Date(category.updatedAt).toLocaleDateString()}
+                    {new Date(tag.updatedAt).toLocaleDateString()}
                   </Table.Cell>
-                  <Table.Cell>{category.title}</Table.Cell>
+                  <Table.Cell>{tag.title}</Table.Cell>
                   <Table.Cell>
                     <span
                       onClick={() => {
                         setShowModal(true);
-                        setIdToAction(category._id);
+                        setIdToAction(tag._id);
                       }}
                       className="font-medium text-red-500 cursor-pointer hover:underline"
                     >
@@ -136,9 +136,9 @@ export default function DashCategories() {
                     <Link
                       className="text-teal-500 hover:underline"
                       onClick={() => {
-                        setIdToAction(category._id);
+                        setIdToAction(tag._id);
                         setIsEdit(true);
-                        setCategoryTitle(category.title);
+                        setTagTitle(tag.title);
                       }}
                     >
                       <span>Edit</span>

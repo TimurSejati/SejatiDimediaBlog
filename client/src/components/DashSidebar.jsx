@@ -6,6 +6,7 @@ import {
   HiOutlineUserGroup,
   HiAnnotation,
   HiChartPie,
+  HiTag,
 } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -74,6 +75,13 @@ export default function DashSidebar() {
                 as="div"
               >
                 Categories
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=tags">
+              <Sidebar.Item active={tab === "tags"} icon={HiTag} as="div">
+                Tags
               </Sidebar.Item>
             </Link>
           )}

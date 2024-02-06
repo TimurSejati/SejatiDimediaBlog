@@ -13,6 +13,7 @@ const createPost = async (req, res, next) => {
       //   content: [],
       // },
       categories: JSON.parse(req.body.categories),
+      tags: JSON.parse(req.body.tags),
       photo: req.body.photo,
       user: req.user._id,
     });
@@ -42,7 +43,7 @@ const updatePost = async (req, res, next) => {
           caption: req.body.caption,
           categories: JSON.parse(req.body.categories),
           photo: req.body.photo,
-          tags: req.body.tags,
+          tags: JSON.parse(req.body.tags),
           body: JSON.parse(req.body.body),
         },
       },
@@ -82,6 +83,10 @@ const getPost = async (req, res, next) => {
         select: ["title"],
       },
       {
+        path: "tags",
+        select: ["title"],
+      },
+      {
         path: "user",
         select: ["profilePicture", "username"],
       },
@@ -101,6 +106,10 @@ const getPost = async (req, res, next) => {
       .populate([
         {
           path: "categories",
+          select: ["title"],
+        },
+        {
+          path: "tags",
           select: ["title"],
         },
         {
@@ -124,8 +133,10 @@ const getAllPost = async (req, res, next) => {
     const categoryQuery = req.query.category
       ? { categories: req.query.category }
       : {};
+    const tagQuery = req.query.tag ? { tags: req.query.tag } : {};
     const posts = await Post2.find({
       ...categoryQuery,
+      ...tagQuery,
       ...(req.query.userId && { user: req.query.userId }),
       ...(req.query.postId && { _id: req.query.postId }),
       ...(req.query.searchTerm && {
@@ -145,6 +156,10 @@ const getAllPost = async (req, res, next) => {
         },
         {
           path: "categories",
+          select: ["title"],
+        },
+        {
+          path: "tags",
           select: ["title"],
         },
       ]);

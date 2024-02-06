@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { getAllPosts } from "../../services/posts";
 import { getAllCategories } from "../../services/categories";
+import { getAllTags } from "../../services/tags";
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -14,6 +15,7 @@ export default function Search() {
 
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState(null);
+  const [tags, setTags] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
@@ -28,6 +30,7 @@ export default function Search() {
         const searchTermFromUrl = urlParams.get("searchTerm");
         const sortFromUrl = urlParams.get("sort");
         const categoryFromUrl = urlParams.get("category");
+        const tagFromUrl = urlParams.get("tag");
         let newSidebarData = { ...sidebarData };
 
         if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
@@ -36,6 +39,7 @@ export default function Search() {
             searchTerm: searchTermFromUrl,
             sort: sortFromUrl,
             category: categoryFromUrl,
+            tag: tagFromUrl,
           };
         }
 
@@ -44,6 +48,10 @@ export default function Search() {
         const fetchCategoriesResponse = await getAllCategories();
         if (fetchCategoriesResponse.data) {
           setCategories(fetchCategoriesResponse.data);
+        }
+        const fetchTagsResponse = await getAllTags();
+        if (fetchTagsResponse.data) {
+          setTags(fetchTagsResponse.data);
         }
 
         setLoading(true);
@@ -74,6 +82,10 @@ export default function Search() {
       const category = e.target.value || "";
       setSidebarData({ ...sidebarData, category });
     }
+    if (e.target.id === "tag") {
+      const tag = e.target.value || "";
+      setSidebarData({ ...sidebarData, tag });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -82,6 +94,7 @@ export default function Search() {
     urlParams.set("searchTerm", sidebarData.searchTerm);
     urlParams.set("sort", sidebarData.sort);
     urlParams.set("category", sidebarData.category);
+    urlParams.set("tag", sidebarData.tag);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
@@ -141,6 +154,17 @@ export default function Search() {
               {categories?.map((category) => (
                 <option key={category._id} value={category._id}>
                   {category.title}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div className="items-center gap-1">
+            <label className="font-semibold">Tag:</label>
+            <Select onChange={handleChange} value={sidebarData.tag} id="tag">
+              <option value="">-</option>
+              {tags?.map((tag) => (
+                <option key={tag._id} value={tag._id}>
+                  {tag.title}
                 </option>
               ))}
             </Select>

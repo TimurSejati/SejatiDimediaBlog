@@ -67,7 +67,8 @@ export default function DashPosts() {
               <Table.HeadCell>Date updated</Table.HeadCell>
               <Table.HeadCell>Post image</Table.HeadCell>
               <Table.HeadCell>Post title</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
+              <Table.HeadCell>Categories</Table.HeadCell>
+              <Table.HeadCell>Tags</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>
                 <span>Edit</span>
@@ -103,6 +104,16 @@ export default function DashPosts() {
                         key={category._id}
                       >
                         {category.title}
+                      </small>
+                    ))}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {post.tags.map((tag) => (
+                      <small
+                        className="p-1.5 mr-1 text-xs text-white rounded-md bg-red-500"
+                        key={tag._id}
+                      >
+                        {tag.title}
                       </small>
                     ))}
                   </Table.Cell>

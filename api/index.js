@@ -7,6 +7,7 @@ import postRoutes from "./routes/post.route.js";
 import post2Routes from "./routes/post2.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import categoryRoutes from "./routes/category.route.js";
+import tagRoutes from "./routes/tag.route.js";
 import cookieParser from "cookie-parser";
 import path from "path";
 import cors from "cors";
@@ -26,8 +27,8 @@ const __dirname = path.resolve();
 
 const app = express();
 app.use(
-  // cors({ origin: "http://localhost:5173", credentials: true })
-  cors({ origin: "https://sejatidimedia-blog.vercel.app", credentials: true })
+  cors({ origin: "http://localhost:5173", credentials: true })
+  // cors({ origin: "https://sejatidimedia-blog.vercel.app", credentials: true })
 );
 
 app.use(express.json());
@@ -47,6 +48,7 @@ app.use("/api/post", postRoutes);
 app.use("/api/post2", post2Routes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/category", categoryRoutes);
+app.use("/api/tag", tagRoutes);
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 

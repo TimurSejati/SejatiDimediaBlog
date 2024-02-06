@@ -24,16 +24,15 @@ import { useEffect } from "react";
 import Editor from "../components/editor/Editor";
 import toast from "react-hot-toast";
 import MultiSelectTagDropdown from "../components/MultiSelectTagDropdown";
-import { filterCategories } from "../../utils/multiSelectTagUtils";
+import { filterCategories, filterTags } from "../../utils/multiSelectTagUtils";
 import { getAllCategories } from "../../services/categories";
+import { getAllTags } from "../../services/tags";
 
 const CreatePost2 = () => {
   const { slug } = useParams();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
   const [initialPhoto, setInitialPhoto] = useState(null);
-  const [photo, setPhoto] = useState(null);
   const [body, setBody] = useState(null);
   const [categories, setCategories] = useState(null);
   const [title, setTitle] = useState("");
@@ -44,11 +43,14 @@ const CreatePost2 = () => {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
-  const [formData, setFormData] = useState({});
 
-  const promiseOptions = async (inputValue) => {
+  const promiseCategoryOptions = async (inputValue) => {
     const { data: categoriesData } = await getAllCategories();
     return filterCategories(inputValue, categoriesData);
+  };
+  const promiseTagOptions = async (inputValue) => {
+    const { data: tagsData } = await getAllTags();
+    return filterTags(inputValue, tagsData);
   };
 
   const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
@@ -117,6 +119,7 @@ const CreatePost2 = () => {
     dataPost.append("slug", postSlug);
     dataPost.append("photo", initialPhoto);
     dataPost.append("categories", JSON.stringify(categories));
+    dataPost.append("tags", JSON.stringify(tags));
     dataPost.append("body", JSON.stringify(body));
 
     mutateCreatePost({
@@ -247,7 +250,7 @@ const CreatePost2 = () => {
               placeholder="post slug"
             />
           </div>
-          <div className="mt-2 mb-5">
+          {/* <div className="mt-2 mb-5">
             <label className="d-label">
               <span className="d-label-text">Categories</span>
             </label>
@@ -257,6 +260,30 @@ const CreatePost2 = () => {
                 setCategories(newValue.map((item) => item.value))
               }
             />
+          </div> */}
+          <div className="flex gap-4">
+            <div className="mt-2 mb-5">
+              <label className="d-label">
+                <span className="d-label-text">Categories</span>
+              </label>
+              <MultiSelectTagDropdown
+                loadOptions={promiseCategoryOptions}
+                onChange={(newValue) =>
+                  setCategories(newValue.map((item) => item.value))
+                }
+              />
+            </div>
+            <div className="mt-2 mb-5">
+              <label className="d-label">
+                <span className="d-label-text">Tags</span>
+              </label>
+              <MultiSelectTagDropdown
+                loadOptions={promiseTagOptions}
+                onChange={(newValue) =>
+                  setTags(newValue.map((item) => item.value))
+                }
+              />
+            </div>
           </div>
           {/* <div className="mt-2 mb-5">
               <label className="d-label">

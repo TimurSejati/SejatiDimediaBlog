@@ -1,16 +1,10 @@
-import {
-  useMutation,
-  useQueries,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getSinglePost, updatePost } from "../../services/posts";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import PostDetailSkeleton from "../components/PostDetailSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
-import { HiOutlineCamera } from "react-icons/hi";
 import { Alert, Button, FileInput } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { app } from "../firebase";
@@ -28,7 +22,10 @@ import { getAllCategories } from "../../services/categories";
 import {
   categoryToOption,
   filterCategories,
+  tagToOption,
+  filterTags,
 } from "../../utils/multiSelectTagUtils";
+import { getAllTags } from "../../services/tags";
 
 const UpdatePost2 = () => {
   const { slug } = useParams();
@@ -47,7 +44,6 @@ const UpdatePost2 = () => {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
-  const [formData, setFormData] = useState({});
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost(slug),
@@ -55,9 +51,14 @@ const UpdatePost2 = () => {
     refetchOnWindowFocus: false,
   });
 
-  const promiseOptions = async (inputValue) => {
+  const promiseCategoryOptions = async (inputValue) => {
     const { data: categoriesData } = await getAllCategories();
     return filterCategories(inputValue, categoriesData);
+  };
+
+  const promiseTagOptions = async (inputValue) => {
+    const { data: tagsData } = await getAllTags();
+    return filterTags(inputValue, tagsData);
   };
 
   const {
@@ -85,6 +86,7 @@ const UpdatePost2 = () => {
   useEffect(() => {
     setInitialPhoto(data?.post?.photo);
     setCategories(data?.post?.categories.map((item) => item._id));
+    setTags(data?.post?.tags.map((item) => item._id));
     setTitle(data?.post?.title);
     setCaption(data?.post?.caption);
     // setTags(data?.tags);
@@ -146,6 +148,7 @@ const UpdatePost2 = () => {
     updatedData.append("photo", initialPhoto);
     updatedData.append("body", JSON.stringify(body));
     updatedData.append("categories", JSON.stringify(categories));
+    updatedData.append("tags", JSON.stringify(tags));
 
     mutateUpdatePostDetail({
       updatedData,
@@ -197,7 +200,7 @@ const UpdatePost2 = () => {
             >
               Delete Image
             </button> */}
-            <div className="flex items-center justify-between gap-4 p-3 border-4 border-teal-500 border-dotted">
+            <div className="flex items-center justify-between gap-4 p-3 border-4 border-dotted border-primary">
               <FileInput
                 type="file"
                 accept="image/*"
@@ -283,17 +286,31 @@ const UpdatePost2 = () => {
                 placeholder="post slug"
               />
             </div>
-            <div className="mt-2 mb-5">
-              <label className="d-label">
-                <span className="d-label-text">Categories</span>
-              </label>
-              <MultiSelectTagDropdown
-                loadOptions={promiseOptions}
-                defaultValue={data?.post?.categories.map(categoryToOption)}
-                onChange={(newValue) =>
-                  setCategories(newValue.map((item) => item.value))
-                }
-              />
+            <div className="flex gap-4">
+              <div className="mt-2 mb-5">
+                <label className="d-label">
+                  <span className="d-label-text">Categories</span>
+                </label>
+                <MultiSelectTagDropdown
+                  loadOptions={promiseCategoryOptions}
+                  defaultValue={data?.post?.categories.map(categoryToOption)}
+                  onChange={(newValue) =>
+                    setCategories(newValue.map((item) => item.value))
+                  }
+                />
+              </div>
+              <div className="mt-2 mb-5">
+                <label className="d-label">
+                  <span className="d-label-text">Tags</span>
+                </label>
+                <MultiSelectTagDropdown
+                  loadOptions={promiseTagOptions}
+                  defaultValue={data?.post?.tags.map(tagToOption)}
+                  onChange={(newValue) =>
+                    setTags(newValue.map((item) => item.value))
+                  }
+                />
+              </div>
             </div>
 
             {/* <div className="mt-2 mb-5">
@@ -302,7 +319,7 @@ const UpdatePost2 = () => {
               </label>
               {isPostDataLoaded && (
                 <MultiSelectTagDropdown
-                  loadOptions={promiseOptions}
+                  loadOptions={CategorypromiseOptions}
                   defaultValue={data.categories.map(categoryToOption)}
                   onChange={(newValue) =>
                     setCategories(newValue.map((item) => item.value))
