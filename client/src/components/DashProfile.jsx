@@ -241,32 +241,41 @@ export default function DashProfile() {
           placeholder="password"
           onChange={handleChange}
         />
-        <Button
+        {/* <Button
           type="submit"
           gradientDuoTone="purpleToBlue"
           outline
           disabled={loading || imageFileUploading}
         >
-          {loading ? "Loading..." : "Update"}
-        </Button>
+          {loading ? "Loading..." : "Ubah"}
+        </Button> */}
+        <button
+          type="submit"
+          className="h-10 transition-all duration-200 ease-in-out bg-white rounded-md outline outline-primary text-primary outline-2 hover:bg-primary hover:text-white"
+        >
+          <div className="flex justify-center item-center">
+            <span> {loading ? "Loading..." : "Ubah"}</span>
+          </div>
+        </button>
         {currentUser.isAdmin && (
           <Link to={"/create-post2"}>
-            <Button
+            <button
               type="button"
-              gradientDuoTone="purpleToPink"
-              className="w-full"
+              className="w-full h-10 text-white transition-all duration-200 ease-in-out rounded-md bg-primary outline-2 hover:bg-blue-500 hover:text-white"
             >
-              Create a post
-            </Button>
+              <div className="flex justify-center item-center">
+                <span>Buat Artikel</span>
+              </div>
+            </button>
           </Link>
         )}
       </form>
       <div className="flex justify-between mt-5 text-red-500">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
-          Delete Account
+          Hapus Akun
         </span>
         <span onClick={handleSignout} className="cursor-pointer">
-          Sign Out
+          Keluar
         </span>
       </div>
       {updateUserSuccess && (

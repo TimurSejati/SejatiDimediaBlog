@@ -2,7 +2,7 @@ import { Button, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
-import { getAllPosts } from "../../services/posts";
+import { getAllPosts, getAllPostsFront } from "../../services/posts";
 import { getAllCategories } from "../../services/categories";
 import { getAllTags } from "../../services/tags";
 
@@ -11,6 +11,7 @@ export default function Search() {
     searchTerm: "",
     sort: "desc",
     category: "",
+    tag: "",
   });
 
   const [posts, setPosts] = useState([]);
@@ -56,7 +57,12 @@ export default function Search() {
 
         setLoading(true);
         const searchQuery = urlParams.toString();
-        const fetchPostsResponse = await getAllPosts(searchQuery, "", "", "");
+        const fetchPostsResponse = await getAllPostsFront(
+          searchQuery,
+          "",
+          "",
+          ""
+        );
 
         if (fetchPostsResponse.data.posts) {
           setPosts(fetchPostsResponse.data.posts);
@@ -121,66 +127,84 @@ export default function Search() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="border-b border-gray-500 p-7 md:border-r md:min-h-screen">
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-          <div className="items-center gap-1">
-            <label className="font-semibold whitespace-nowrap">
-              Kata kunci:
-            </label>
-            <TextInput
-              placeholder="Masukan Pencarian..."
-              id="searchTerm"
-              type="text"
-              value={sidebarData.searchTerm}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="items-center gap-1">
-            <label className="font-semibold">Urutan:</label>
-            <Select onChange={handleChange} value={sidebarData.sort} id="sort">
-              <option value="desc">Terbaru</option>
-              <option value="asc">Terlama</option>
-            </Select>
-          </div>
-          <div className="items-center gap-1">
-            <label className="font-semibold">Kategori:</label>
-            <Select
-              onChange={handleChange}
-              value={sidebarData.category}
-              id="category"
-            >
-              <option value="">-</option>
-              {categories?.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.title}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <div className="items-center gap-1">
-            <label className="font-semibold">Tag:</label>
-            <Select onChange={handleChange} value={sidebarData.tag} id="tag">
-              <option value="">-</option>
-              {tags?.map((tag) => (
-                <option key={tag._id} value={tag._id}>
-                  {tag.title}
-                </option>
-              ))}
-            </Select>
-          </div>
-          {/* <Button outline gradientDuoTone="purpleToPink">
-            Cari
-          </Button> */}
-          <button
-            type="submit"
-            className="px-4 py-1.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+    <div className="flex flex-col mx-auto md:flex-row max-w-7xl">
+      <div className="flex flex-col w-full gap-8 py-7">
+        <div className="p-7">
+          <form
+            className="flex items-end justify-center gap-5"
+            onSubmit={handleSubmit}
           >
-            Cari
-          </button>
-        </form>
-      </div>
-      <div className="flex flex-col w-full gap-8 p-3 mx-auto py-7">
+            <div className="items-center gap-1">
+              <label className="mb-1 font-semibold whitespace-nowrap">
+                Kata kunci
+              </label>
+              <TextInput
+                className="mt-1"
+                placeholder="Masukan Pencarian..."
+                id="searchTerm"
+                type="text"
+                value={sidebarData.searchTerm}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="items-center gap-1">
+              <label className="font-semibold">Urutan</label>
+              <Select
+                className="mt-1"
+                onChange={handleChange}
+                value={sidebarData.sort}
+                id="sort"
+              >
+                <option value="desc">Terbaru</option>
+                <option value="asc">Terlama</option>
+              </Select>
+            </div>
+            <div className="items-center gap-1">
+              <label className="font-semibold">Kategori</label>
+              <Select
+                className="mt-1"
+                onChange={handleChange}
+                value={sidebarData.category}
+                id="category"
+              >
+                <option value="">-</option>
+                {categories?.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.title}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="items-center gap-1">
+              <label className="font-semibold">Tag</label>
+              <Select
+                className="mt-1"
+                onChange={handleChange}
+                value={sidebarData.tag}
+                id="tag"
+              >
+                <option value="">-</option>
+                {tags?.map((tag) => (
+                  <option key={tag._id} value={tag._id}>
+                    {tag.title}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="items-end gap-1">
+              <label htmlFor="">&nbsp;</label>
+              <button
+                type="submit"
+                className="px-4 py-2 mb-0.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+              >
+                Cari
+              </button>
+              {/* <Button outline gradientDuoTone="purpleToPink">
+                Cari
+              </Button> */}
+            </div>
+          </form>
+        </div>
         <h1 className="p-3 mt-5 text-3xl font-semibold border-gray-500 sm:border-b ">
           Hasil Pencarian:
         </h1>

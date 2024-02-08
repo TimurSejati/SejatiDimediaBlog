@@ -1,18 +1,64 @@
-import { Modal, Table, Button } from "flowbite-react";
+import { Modal, Table, Button, ToggleSwitch } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useQuery } from "@tanstack/react-query";
-import { deletePost, getAllPosts } from "../../services/posts";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  deletePost,
+  getAllPosts,
+  getAllPostsFront,
+  updatePost,
+} from "../../services/posts";
 import toast from "react-hot-toast";
 
 export default function DashPosts() {
+  const queryClient = useQueryClient();
   const { currentUser } = useSelector((state) => state.user);
+
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState("");
+
+  const { mutate: mutateUpdatePostDetail } = useMutation({
+    mutationFn: ({ updatedData, slug, token }) => {
+      return updatePost({
+        updatedData,
+        slug,
+        token,
+      });
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["blog"]);
+      toast.success("Post is updated");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
+
+  const togglePublishStatus = async (postSlug, published) => {
+    console.log(postSlug);
+    try {
+      let updatedData = new FormData();
+      updatedData.append("published", !published);
+
+      mutateUpdatePostDetail({
+        updatedData,
+        slug: postSlug,
+        token: currentUser.token,
+      });
+
+      // // setUserPosts({ ...userPosts, data: updated });
+      // // console.log(userPosts);
+    } catch (error) {
+      console.log(error);
+      console.error("Error toggling publish status:", error);
+      toast.error("Failed to toggle publish status");
+    }
+  };
 
   let { data } = useQuery({
     queryFn: () => getAllPosts("", currentUser?._id),
@@ -69,6 +115,7 @@ export default function DashPosts() {
               <Table.HeadCell>Post title</Table.HeadCell>
               <Table.HeadCell>Categories</Table.HeadCell>
               <Table.HeadCell>Tags</Table.HeadCell>
+              <Table.HeadCell>Published</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>
                 <span>Edit</span>
@@ -116,6 +163,16 @@ export default function DashPosts() {
                         {tag.title}
                       </small>
                     ))}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <ToggleSwitch
+                      checked={post.published}
+                      onChange={() =>
+                        togglePublishStatus(post.slug, post.published)
+                      }
+                      className="react-switch"
+                      label={post.published ? "Published" : "Unpublished"}
+                    />
                   </Table.Cell>
                   <Table.Cell>
                     <span

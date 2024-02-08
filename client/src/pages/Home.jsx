@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import Hero from "../components/Hero";
 import { useQuery } from "@tanstack/react-query";
-import { getAllPosts } from "../../services/posts";
+import { getAllPosts, getAllPostsFront } from "../../services/posts";
 import { toast } from "react-hot-toast";
 import PostCardSkeleton from "../components/PostCardSkeleton";
 import { useState } from "react";
@@ -30,7 +30,7 @@ export default function Home() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["posts", page],
-    queryFn: () => getAllPosts("", "", page),
+    queryFn: () => getAllPostsFront("", "", page),
     onError: (error) => {
       toast.error(error.message);
       console.log(error);

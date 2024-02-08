@@ -5,7 +5,7 @@ const PostSchema = new Schema(
     title: { type: String, required: true },
     caption: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
-    body: { type: Object, required: true },
+    body: { type: Object, required: false },
     photo: {
       type: String,
       default:
@@ -15,6 +15,15 @@ const PostSchema = new Schema(
     tags: { type: [String] },
     categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
+    published: { type: Boolean, default: false },
+    likes: {
+      type: Array,
+      default: [],
+    },
+    numberOfLikes: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

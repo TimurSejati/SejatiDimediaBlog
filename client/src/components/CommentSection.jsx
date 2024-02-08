@@ -212,6 +212,7 @@ export default function CommentSection({ postId }) {
         onClose={() => setShowModal(false)}
         popup
         size="md"
+        className="z-[9999]"
       >
         <Modal.Header />
         <Modal.Body>

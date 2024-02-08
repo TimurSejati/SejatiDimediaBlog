@@ -56,8 +56,7 @@ export default function SignIn() {
             <img src={images.Logo} alt="Logo" className="w-40" />
           </Link>
           <p className="mt-5 text-sm">
-            This is a demo project. You can sign in with your email and password
-            or with Google.
+            Anda bisa masuk dengan menggunakan akun email atau akun google
           </p>
         </div>
         {/* right */}
@@ -65,7 +64,7 @@ export default function SignIn() {
         <div className="flex-1">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
-              <Label value="Your email" />
+              <Label value="Email anda" />
               <TextInput
                 type="email"
                 placeholder="name@company.com"
@@ -74,7 +73,7 @@ export default function SignIn() {
               />
             </div>
             <div>
-              <Label value="Your password" />
+              <Label value="Password anda" />
               <TextInput
                 type="password"
                 placeholder="**********"
@@ -82,26 +81,34 @@ export default function SignIn() {
                 onChange={handleChange}
               />
             </div>
-            <Button
+            <button
+              type="submit"
+              className="h-10 text-white transition-all duration-200 ease-in-out rounded-md bg-primary outline-2 hover:bg-blue-500 hover:text-white"
+            >
+              <div className="flex justify-center item-center">
+                <span>
+                  {loading ? (
+                    <>
+                      <Spinner size="sm" />
+                      <span className="pl-3">Loading...</span>
+                    </>
+                  ) : (
+                    "Masuk"
+                  )}
+                </span>
+              </div>
+            </button>
+            {/* <Button
               gradientDuoTone="purpleToPink"
               type="submit"
               disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Spinner size="sm" />
-                  <span className="pl-3">Loading...</span>
-                </>
-              ) : (
-                "Sign In"
-              )}
-            </Button>
+            ></Button> */}
             <OAuth />
           </form>
           <div className="flex gap-2 mt-5 text-sm">
-            <span>Dont Have an account?</span>
+            <span>Belum punya akun?</span>
             <Link to="/sign-up" className="text-blue-500">
-              Sign Up
+              Daftar
             </Link>
           </div>
           {/* {errorMessage && (

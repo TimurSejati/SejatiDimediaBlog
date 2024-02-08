@@ -31,14 +31,15 @@ export default function OAuth() {
     }
   };
   return (
-    <Button
+    <button
       type="button"
-      gradientDuoTone="pinkToOrange"
-      outline
+      className="h-10 transition-all duration-200 ease-in-out bg-white rounded-md outline outline-primary text-primary outline-2 hover:bg-primary hover:text-white"
       onClick={handleGoogleClick}
     >
-      <AiFillGoogleCircle className="w-6 h-6 mr-2" />
-      Continue with Google
-    </Button>
+      <div className="flex justify-center item-center">
+        <AiFillGoogleCircle className="w-6 h-6 mr-2" />
+        <span>Pakai akun Google</span>
+      </div>
+    </button>
   );
 }

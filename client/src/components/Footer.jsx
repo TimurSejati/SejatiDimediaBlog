@@ -13,14 +13,6 @@ export default function FooterCom() {
     <Footer container className="border border-t-8 border-primary">
       <div className="w-full mx-auto max-w-7xl">
         <div className="grid justify-between w-full sm:flex md:grid-cols-1">
-          <div className="mt-5">
-            <Link
-              to="/"
-              className="self-center text-lg font-semibold whitespace-nowrap sm:text-xl dark:text-white"
-            >
-              <img src={images.Logo} alt="Logo" className="w-32" />
-            </Link>
-          </div>
           {/* <div className="grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6">
             <div>
               <Footer.Title title="About" />
@@ -63,8 +55,15 @@ export default function FooterCom() {
             </div>
           </div> */}
         </div>
-        <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
+          <div className="mt-5">
+            <Link
+              to="/"
+              className="self-center text-lg font-semibold whitespace-nowrap sm:text-xl dark:text-white"
+            >
+              <img src={images.Logo} alt="Logo" className="w-24" />
+            </Link>
+          </div>
           <Footer.Copyright
             href="#"
             by="Sejati Dimedia Blog"

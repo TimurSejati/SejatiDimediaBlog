@@ -11,7 +11,6 @@ import { images } from "../constants";
 
 const NavItem = ({ item }) => {
   const path = useLocation().pathname;
-  console.log(path, "path");
   const [dropdown, setDropdown] = useState(false);
 
   const toggleDropdownHandler = () => {
@@ -179,15 +178,15 @@ export default function Header() {
               </span>
             </Dropdown.Header>
             <Link to={"/dashboard?tab=profile"}>
-              <Dropdown.Item>Profile</Dropdown.Item>
+              <Dropdown.Item>Profil</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout}>Keluar</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
             <button className="px-4 py-1.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white">
-              Sign In
+              Masuk
             </button>
             {/* <Button gradientDuoTone="purpleToBlue" outline>
               Sign In

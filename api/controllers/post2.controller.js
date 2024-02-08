@@ -16,6 +16,7 @@ const createPost = async (req, res, next) => {
       tags: JSON.parse(req.body.tags),
       photo: req.body.photo,
       user: req.user._id,
+      published: req.body.published,
     });
 
     const createdPost = await post.save();
@@ -39,12 +40,15 @@ const updatePost = async (req, res, next) => {
       post._id,
       {
         $set: {
-          title: req.body.title,
-          caption: req.body.caption,
-          categories: JSON.parse(req.body.categories),
-          photo: req.body.photo,
-          tags: JSON.parse(req.body.tags),
-          body: JSON.parse(req.body.body),
+          title: req.body.title ? req.body.title : post.title,
+          caption: req.body.caption ? req.body.caption : post.caption,
+          categories: req.body.categories
+            ? JSON.parse(req.body.categories)
+            : post.categories,
+          photo: req.body.photo ? req.body.photo : post.photo,
+          tags: req.body.tags ? JSON.parse(req.body.tags) : post.tags,
+          body: req.body.body ? JSON.parse(req.body.body) : post.body,
+          published: req.body.published ? req.body.published : post.published,
         },
       },
       { new: true }
@@ -99,6 +103,7 @@ const getPost = async (req, res, next) => {
 
     // Find related posts by categories
     const relatedPosts = await Post2.find({
+      ...{ published: true },
       categories: { $in: post.categories.map((category) => category._id) },
       _id: { $ne: post._id }, // Exclude the current post
     })
@@ -188,4 +193,97 @@ const getAllPost = async (req, res, next) => {
   }
 };
 
-export { createPost, updatePost, deletePost, getPost, getAllPost };
+const getAllPostFront = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+    const categoryQuery = req.query.category
+      ? { categories: req.query.category }
+      : {};
+    const tagQuery = req.query.tag ? { tags: req.query.tag } : {};
+    const posts = await Post2.find({
+      ...categoryQuery,
+      ...tagQuery,
+      ...{ published: true },
+      ...(req.query.userId && { user: req.query.userId }),
+      ...(req.query.postId && { _id: req.query.postId }),
+      ...(req.query.searchTerm && {
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit)
+      .populate([
+        {
+          path: "user",
+          select: ["profilePicture", "username"],
+        },
+        {
+          path: "categories",
+          select: ["title"],
+        },
+        {
+          path: "tags",
+          select: ["title"],
+        },
+      ]);
+
+    // Check if there is a next page
+    const nextPagePosts = await Post2.find({
+      ...{ published: true },
+      ...(req.query.userId && { user: req.query.userId }),
+      ...(req.query.postId && { _id: req.query.postId }),
+      ...(req.query.searchTerm && {
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex + limit)
+      .limit(1); // Fetch one additional post to check if there is a next page
+
+    const hasNextPage = nextPagePosts.length > 0;
+
+    // res.json(posts);
+    res.json({ posts, hasNextPage });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const likePost = async (req, res, next) => {
+  try {
+    const post = await Post2.findById(req.params.postId);
+    if (!post) {
+      return next(errorHandler(404, "Post not found"));
+    }
+    const userIndex = post.likes.indexOf(req.user.id);
+    if (userIndex === -1) {
+      post.numberOfLikes += 1;
+      post.likes.push(req.user.id);
+    } else {
+      post.numberOfLikes -= 1;
+      post.likes.splice(userIndex, 1);
+    }
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  createPost,
+  updatePost,
+  deletePost,
+  getPost,
+  getAllPost,
+  getAllPostFront,
+};

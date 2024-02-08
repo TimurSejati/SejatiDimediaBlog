@@ -20,6 +20,26 @@ export const getAllPosts = async (
     throw new Error(error.message);
   }
 };
+export const getAllPostsFront = async (
+  searchKeyword = "",
+  userId = "",
+  page = 1,
+  limit = 6
+) => {
+  try {
+    const { data } = await createAxiosInstance().get(
+      `/api/post2/front?userId=${userId}&${searchKeyword}&page=${page}&limit=${
+        limit * page
+      }`
+    );
+
+    return { data };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
 
 export const getSinglePost = async (slug) => {
   try {
@@ -90,6 +110,29 @@ export const deletePost = async (postSlug, token) => {
       config
     );
     return res;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const likePost = async ({ postId, token }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    console.log(config, "ini token like post");
+
+    const data = await createAxiosInstance().put(
+      `/api/post2/likePost/${postId}`,
+      {},
+      config
+    );
+
+    return { data };
   } catch (error) {
     if (error.response && error.response.data.message)
       throw new Error(error.response.data.message);

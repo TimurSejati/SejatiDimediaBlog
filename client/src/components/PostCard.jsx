@@ -1,21 +1,32 @@
 import { BsCheckLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { HiTag } from "react-icons/hi";
+import { HiCalendar, HiPencil, HiPencilAlt, HiTag } from "react-icons/hi";
+import { FaThumbsUp } from "react-icons/fa";
 
 export default function PostCard({ post, cls }) {
+  const truncateCaption = (caption, maxLength) => {
+    if (caption.length > maxLength) {
+      return caption.substring(0, maxLength - 3) + "...";
+    } else {
+      return caption;
+    }
+  };
+
   return (
     <div
       className={`${cls} rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]`}
     >
-      <Link to={`/blog/${post?.slug}`}>
-        <img
-          src={post?.photo}
-          alt="post1"
-          className="object-cover object-center w-full h-auto md:h-52 lg:h-48 xl:h-60"
-        />
-      </Link>
+      <div className="relative">
+        <Link to={`/blog/${post?.slug}`}>
+          <img
+            src={post?.photo}
+            alt="post1"
+            className="object-cover object-center w-full h-auto md:h-52 lg:h-48 xl:h-60"
+          />
+        </Link>
+      </div>
 
-      <div className="p-5">
+      <div className="top-0 p-5">
         {post?.categories.map((category) => (
           <span
             className="px-2 py-1 mr-2 font-medium rounded-md text-primary bg-primary bg-opacity-10"
@@ -24,19 +35,29 @@ export default function PostCard({ post, cls }) {
             {category.title}
           </span>
         ))}
-        <h2 className="font-roboto font-semibold text-xl text-dark-soft md:text-2xl lg:text-[28px] mt-2">
-          {post?.title}
+        <h2 className="font-roboto font-semibold text-xl text-dark-soft md:text-2xl lg:text-[20px] mt-2">
+          <Link to={`/blog/${post?.slug}`}>{post?.title}</Link>
         </h2>
-        <span className="text-xs font-medium text-dark-light md:text-sm">
-          {new Date(post?.createdAt).toLocaleDateString("en-US", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
+        <span className="flex items-center gap-4 text-xs font-medium text-dark-light md:text-xs">
+          <div className="flex items-center gap-1">
+            <HiPencilAlt />
+            <span>
+              {new Date(post?.createdAt).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+          {post?.likes?.length > 0 && (
+            <div className="flex items-center gap-1">
+              <FaThumbsUp />
+              <span>{post?.numberOfLikes} Disukai</span>
+            </div>
+          )}
         </span>
-        <p className="mt-4 text-sm text-gray-400 md:text-lg">
-          {/* Majority of peole will work in jobs that don’t exist today. */}
-          {post?.caption}
+        <p className="h-10 mt-4 overflow-hidden text-sm text-gray-400 md:text-sm">
+          {truncateCaption(post?.caption, 100)}
         </p>
         <div className="flex items-center justify-between mt-4 flex-nowrap">
           <div className="flex items-center gap-x-2 md:gap-x-2.5">
@@ -51,20 +72,17 @@ export default function PostCard({ post, cls }) {
               </h4>
               {post?.tags && (
                 <div className="flex items-center">
-                  {post?.tags.map((tag) => (
-                    <div className="flex items-center mr-2" key={tag._id}>
-                      <HiTag className="mr-1 text-opacity-80 text-primary" />
+                  {post?.tags.map((tag, index) => (
+                    <div className="flex items-center mr-1" key={tag._id}>
+                      {index == 0 && (
+                        <HiTag className="mr-1 text-opacity-80 text-primary" />
+                      )}
                       <div>
                         <span className="text-gray-500">{tag.title}</span>
                       </div>
+                      {index + 1 != post?.tags?.length ? "," : ""}
                     </div>
                   ))}
-                  {/* <span className="bg-[#36B37E] w-fit bg-opacity-20 p-1.5 rounded-full">
-                  <BsCheckLg className="w-3 h-3 text-[#36B37E]" />
-                </span>
-                <span className="text-xs italic text-dark-light md:text-sm">
-                  Verified Writer
-                </span> */}
                 </div>
               )}
             </div>
