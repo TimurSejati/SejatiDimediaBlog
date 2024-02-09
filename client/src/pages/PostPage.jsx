@@ -112,7 +112,7 @@ export default function PostPage() {
           <div>
             {data?.post?.categories.map((category) => (
               <span
-                className="px-2 py-1 mr-2 font-medium rounded-md text-primary bg-primary bg-opacity-10"
+                className="px-2 py-1 mr-2 text-xs rounded-md md:text-base text-primary bg-primary bg-opacity-10"
                 key={category._id}
               >
                 {category.title}
@@ -120,7 +120,7 @@ export default function PostPage() {
             ))}
           </div>
         </div>
-        <span className="flex items-center gap-1 mb-12 text-xs font-medium text-dark-light md:text-base">
+        <span className="flex items-center gap-1 mb-5 text-xs font-medium text-dark-light md:text-base">
           <HiPencilAlt />
           <span>
             {new Date(data?.post?.createdAt).toLocaleDateString("en-US", {
@@ -140,32 +140,35 @@ export default function PostPage() {
             <img
               src={data?.post?.user.profilePicture}
               alt="post-profile"
-              className="w-9 h-9 md:w-12 md:h-12"
+              className="object-cover w-8 h-8 rounded-full md:w-12 md:h-12"
             />
-            <span className="items-center text-xl font-medium font-roboto text-dark-hard md:text-[20px]">
-              {data?.post?.user.username}
+            <div>
+              <span className="items-center text-xs font-medium font-roboto text-dark-hard lg:text-[20px]">
+                {data?.post?.user.username}
+              </span>
               {data?.post?.tags && (
                 <div className="flex items-center">
                   {data?.post?.tags.map((tag, index) => (
-                    <div className="flex items-center mr-1" key={tag._id}>
+                    <div
+                      className="flex items-center mr-1 text-xs lg:text-base"
+                      key={tag._id}
+                    >
                       {index == 0 && (
-                        <HiTag className="mr-1 text-base text-opacity-80 text-primary" />
+                        <HiTag className="mr-1 text-opacity-80 text-primary" />
                       )}
                       <div>
-                        <span className="text-base text-gray-500">
-                          {tag.title}
-                          {index + 1 != data?.post?.tags?.length ? "," : ""}
-                        </span>
+                        <span className="text-gray-500">{tag.title}</span>
                       </div>
+                      {index + 1 != data?.post?.tags?.length ? "," : ""}
                     </div>
                   ))}
                 </div>
               )}
-            </span>
+            </div>
           </div>
 
           <div className="flex gap-4">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center text-xs md:text-base">
               <button
                 type="button"
                 onClick={() => handleLikePost(data?.post?._id)}
@@ -175,7 +178,7 @@ export default function PostPage() {
                   "!text-blue-500"
                 }`}
               >
-                <FaThumbsUp className="text-2xl" />
+                <FaThumbsUp className="text-lg lg:text-2xl" />
               </button>
               <div
                 className={`${
@@ -200,7 +203,7 @@ export default function PostPage() {
                 //   "!text-blue-500"
                 // }`}
               >
-                <FaBookmark className="text-2xl" />
+                <FaBookmark className="text-lg lg:text-2xl" />
               </button>
             </div>
           </div>

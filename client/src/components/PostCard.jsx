@@ -29,13 +29,13 @@ export default function PostCard({ post, cls }) {
       <div className="top-0 p-5">
         {post?.categories.map((category) => (
           <span
-            className="px-2 py-1 mr-2 font-medium rounded-md text-primary bg-primary bg-opacity-10"
+            className="px-2 py-1 mr-2 text-xs rounded-md md:text-base text-primary bg-primary bg-opacity-10"
             key={category._id}
           >
             {category.title}
           </span>
         ))}
-        <h2 className="font-roboto font-semibold text-xl text-dark-soft md:text-2xl lg:text-[20px] mt-2">
+        <h2 className="font-roboto font-semibold text-lg text-dark-soft md:text-2xl lg:text-[20px] mt-2">
           <Link to={`/blog/${post?.slug}`}>{post?.title}</Link>
         </h2>
         <span className="flex items-center gap-4 text-xs font-medium text-dark-light md:text-xs">
@@ -56,7 +56,7 @@ export default function PostCard({ post, cls }) {
             </div>
           )}
         </span>
-        <p className="h-10 mt-4 overflow-hidden text-sm text-gray-400 md:text-sm">
+        <p className="h-10 mt-4 overflow-hidden text-xs text-gray-400 md:text-sm">
           {truncateCaption(post?.caption, 100)}
         </p>
         <div className="flex items-center justify-between mt-4 flex-nowrap">
@@ -64,16 +64,19 @@ export default function PostCard({ post, cls }) {
             <img
               src={post?.user.profilePicture}
               alt="post-profile"
-              className="w-9 h-9 md:w-10 md:h-10"
+              className="object-cover w-8 h-8 rounded-full md:w-10 md:h-10"
             />
             <div className="flex flex-col">
-              <h4 className="text-sm italic font-bold taxt-bg-dark-soft">
+              <h4 className="text-xs italic font-bold md:text-base taxt-bg-dark-soft">
                 {post?.user.username}
               </h4>
               {post?.tags && (
                 <div className="flex items-center">
                   {post?.tags.map((tag, index) => (
-                    <div className="flex items-center mr-1" key={tag._id}>
+                    <div
+                      className="flex items-center mr-1 text-xs md:text-base"
+                      key={tag._id}
+                    >
                       {index == 0 && (
                         <HiTag className="mr-1 text-opacity-80 text-primary" />
                       )}

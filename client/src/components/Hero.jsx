@@ -19,13 +19,13 @@ const Hero = () => {
   return (
     <section className="flex flex-col items-center justify-center px-5 py-5 lg:flex-row">
       <div className="mt-10 lg:w-2/3">
-        <h1 className="text-3xl font-bold text-center font-roboto text-dark-soft md:text-5xl lg:text-4xl xl:text-5x">
+        <h1 className="text-xl font-bold text-center font-roboto text-dark-soft md:text-5xl lg:text-4xl xl:text-3xl">
           Temukan inspirasi dan wawasan dalam setiap baris kata.
         </h1>
-        <p className="mt-4 text-center text-dark-light lg:text-base xl:text-xl md:text-xl ">
-          Selamat datang di Sejati Dimedia Blog, tempat di mana setiap baris
-          kata adalah jendela menuju inspirasi dan wawasan yang mendalam,
-          membuka pintu menuju pengetahuan yang tak terbatas.
+        <p className="mt-4 text-center text-dark-light lg:text-base xl:text-xl md:text-xl">
+          Tempat di mana setiap baris kata adalah jendela menuju inspirasi dan
+          wawasan yang mendalam, membuka pintu menuju pengetahuan yang tak
+          terbatas.
         </p>
         <div className="flex flex-col gap-y-2.5 mt-10 relative xl:mt-10">
           <div className="relative">

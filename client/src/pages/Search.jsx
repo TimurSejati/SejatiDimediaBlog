@@ -131,10 +131,10 @@ export default function Search() {
       <div className="flex flex-col w-full gap-8 py-7">
         <div className="p-7">
           <form
-            className="flex items-end justify-center gap-5"
+            className="flex flex-col items-end justify-center gap-5 md:flex-row"
             onSubmit={handleSubmit}
           >
-            <div className="items-center gap-1">
+            <div className="items-center w-full gap-1">
               <label className="mb-1 font-semibold whitespace-nowrap">
                 Kata kunci
               </label>
@@ -147,7 +147,7 @@ export default function Search() {
                 onChange={handleChange}
               />
             </div>
-            <div className="items-center gap-1">
+            <div className="items-center w-full gap-1">
               <label className="font-semibold">Urutan</label>
               <Select
                 className="mt-1"
@@ -159,7 +159,7 @@ export default function Search() {
                 <option value="asc">Terlama</option>
               </Select>
             </div>
-            <div className="items-center gap-1">
+            <div className="items-center w-full gap-1">
               <label className="font-semibold">Kategori</label>
               <Select
                 className="mt-1"
@@ -175,7 +175,7 @@ export default function Search() {
                 ))}
               </Select>
             </div>
-            <div className="items-center gap-1">
+            <div className="items-center w-full gap-1">
               <label className="font-semibold">Tag</label>
               <Select
                 className="mt-1"
@@ -191,11 +191,11 @@ export default function Search() {
                 ))}
               </Select>
             </div>
-            <div className="items-end gap-1">
+            <div className="items-end w-full gap-1">
               <label htmlFor="">&nbsp;</label>
               <button
                 type="submit"
-                className="px-4 py-2 mb-0.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+                className="w-full px-4 py-2 mb-0.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
               >
                 Cari
               </button>
@@ -205,33 +205,35 @@ export default function Search() {
             </div>
           </form>
         </div>
-        <h1 className="p-3 mt-5 text-3xl font-semibold border-gray-500 sm:border-b ">
-          Hasil Pencarian:
-        </h1>
-        <div className="flex flex-wrap gap-4 p-7">
-          {!loading && posts.length === 0 && (
-            <p className="text-xl text-gray-500">
-              Postingan artikel tidak ditemukan
-            </p>
-          )}
-          {loading && <p className="text-xl text-gray-500">Loading...</p>}
-          {!loading &&
-            posts &&
-            posts.map((post) => (
-              <PostCard
-                key={post._id}
-                post={post}
-                cls="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]"
-              />
-            ))}
-          {showMore && (
-            <button
-              onClick={handleShowMore}
-              className="w-full text-lg text-teal-500 hover:underline p-7"
-            >
-              Show More
-            </button>
-          )}
+        <div>
+          <h1 className="p-3 mt-5 text-3xl font-semibold border-gray-500 sm:border-b ">
+            Hasil Pencarian:
+          </h1>
+          <div className="flex flex-wrap gap-4 p-7">
+            {!loading && posts.length === 0 && (
+              <p className="text-xl text-gray-500">
+                Postingan artikel tidak ditemukan
+              </p>
+            )}
+            {loading && <p className="text-xl text-gray-500">Loading...</p>}
+            {!loading &&
+              posts &&
+              posts.map((post) => (
+                <PostCard
+                  key={post._id}
+                  post={post}
+                  cls="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]"
+                />
+              ))}
+            {showMore && (
+              <button
+                onClick={handleShowMore}
+                className="w-full text-lg text-teal-500 hover:underline p-7"
+              >
+                Show More
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

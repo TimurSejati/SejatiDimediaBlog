@@ -95,6 +95,7 @@ export default function Header() {
   const navItemsInfo = [
     { name: "Beranda", type: "link", href: "/" },
     { name: "Artikel", type: "link", href: "/search" },
+    { name: "Tentang", type: "link", href: "/about" },
     // {
     //   name: "Pages",
     //   type: "dropdown",
