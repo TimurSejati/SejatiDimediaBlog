@@ -97,7 +97,7 @@ export default function PostPage() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen text-primary">
         <Spinner size="xl" />
       </div>
     );
@@ -106,7 +106,7 @@ export default function PostPage() {
       <article className="flex-1">
         <BreadCrumbs data={breadCrumbsData} />
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-medium font-roboto text-dark-hard md:text-[42px] mb-4">
+          <h1 className="text-xl font-medium font-roboto text-dark-hard md:text-[42px] md:mb-4">
             {data?.post?.title}
           </h1>
           <div>
@@ -136,18 +136,18 @@ export default function PostPage() {
           alt={data?.post?.title}
         />
         <div className="flex items-center justify-between">
-          <div className="flex gap-2 my-4">
+          <div className="flex items-center gap-2 my-4">
             <img
               src={data?.post?.user.profilePicture}
               alt="post-profile"
-              className="object-cover w-8 h-8 rounded-full md:w-12 md:h-12"
+              className="object-cover w-10 h-10 rounded-full md:w-12 md:h-12"
             />
             <div>
               <span className="items-center text-xs font-medium font-roboto text-dark-hard lg:text-[20px]">
                 {data?.post?.user.username}
               </span>
               {data?.post?.tags && (
-                <div className="flex items-center">
+                <div>
                   {data?.post?.tags.map((tag, index) => (
                     <div
                       className="flex items-center mr-1 text-xs lg:text-base"
@@ -167,7 +167,7 @@ export default function PostPage() {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-2 my-4">
             <div className="flex flex-col items-center text-xs md:text-base">
               <button
                 type="button"

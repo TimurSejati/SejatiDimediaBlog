@@ -169,7 +169,12 @@ export default function Header() {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt="user" img={currentUser.profilePicture} rounded />
+              <Avatar
+                alt="user"
+                className="object-cover"
+                img={currentUser.profilePicture}
+                rounded
+              />
             }
           >
             <Dropdown.Header>
@@ -198,7 +203,9 @@ export default function Header() {
       </div>
       <Navbar.Collapse>
         {navItemsInfo.map((item) => (
-          <NavItem key={item.name} item={item} />
+          <div key={item.name} className="my-2">
+            <NavItem key={item.name} item={item} />
+          </div>
         ))}
       </Navbar.Collapse>
     </Navbar>

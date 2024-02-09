@@ -14,31 +14,35 @@ export default function About() {
             <p className="text-lg font-semibold text-gray-700">
               Timur Dian Radha Sejati
             </p>
-            <small>Pemilik Sejati Dimedia Blog</small>
+            <small>Pembuat Platform Sejati Dimedia Blog</small>
           </div>
         </div>
         <p className="mb-8 text-lg text-gray-700">
-          Selamat datang di Sejati Dimedia Blog,
+          Selamat datang di{" "}
+          <span className="font-bold">Sejati Dimedia Blog</span>,
         </p>
         <p className="mb-8 text-lg text-gray-700">
-          Kami percaya bahwa kekuatan sebuah kata dapat mengubah pandangan,
-          membangkitkan semangat, dan membawa perubahan. Oleh karena itu, kami
-          berkomitmen untuk menyajikan konten yang menarik, menggugah, dan
-          memperkaya pengetahuan Anda.
+          Kami yakin bahwa kekuatan kata-kata bukan hanya mampu merubah
+          pandangan, tetapi juga membangkitkan semangat, dan menjadi pendorong
+          utama dalam menciptakan perubahan yang positif.
         </p>
         <p className="mb-8 text-lg text-gray-700">
           Tujuan kami adalah untuk menjadi sumber yang tepercaya dan bermanfaat
           bagi para pembaca dalam pencarian mereka untuk mendapatkan pengetahuan
           baru, mengeksplorasi ide-ide kreatif, dan menemukan inspirasi di
-          setiap sudut halaman. Kami berkomitmen untuk menyajikan berita
-          terkini, ulasan mendalam, cerita inspiratif, serta panduan praktis
-          yang relevan dengan cara yang informatif dan menghibur.
+          setiap sudut halaman.
+        </p>
+        <p className="mb-8 text-lg text-gray-700">
+          Kami berkomitmen untuk menyediakan sumber informasi yang kaya dan
+          bermanfaat bagi pembaca kami. Setiap tulisan yang kami publikasikan
+          adalah hasil dari dedikasi kami dalam memberikan konten yang mendalam,
+          terkini, dan relevan.
         </p>
         <p className="mb-8 text-lg text-gray-700">
           Bergabunglah dengan kami dalam perjalanan membaca yang tak terbatas,
           dan temukan keindahan serta kebenaran di setiap halaman. Kami yakin
-          bahwa di Sejati Dimedia Blog, Anda akan menemukan inspirasi dan
-          wawasan dalam setiap baris kata.
+          bahwa di <bold className="font-bold">Sejati Dimedia Blog</bold>, Anda
+          akan menemukan inspirasi dan wawasan dalam setiap baris kata.
         </p>
       </div>
     </div>

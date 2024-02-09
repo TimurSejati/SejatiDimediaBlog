@@ -21,7 +21,7 @@ export default function PostCard({ post, cls }) {
           <img
             src={post?.photo}
             alt="post1"
-            className="object-cover object-center w-full h-auto md:h-52 lg:h-48 xl:h-60"
+            className="object-cover object-center w-full md:h-52 lg:h-48 xl:h-60 max-h-[250px]"
           />
         </Link>
       </div>

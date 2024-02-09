@@ -68,6 +68,7 @@ export default function FooterCom() {
             href="#"
             by="Sejati Dimedia Blog"
             year={new Date().getFullYear()}
+            className="my-4"
           />
           <div className="flex gap-6 mt-4 sm:mt-0 sm:justify-center">
             <Footer.Icon href="#" icon={BsFacebook} />

@@ -64,7 +64,7 @@ export default function Home() {
             <>
               {data?.data?.posts && data?.data?.posts.length > 0 && (
                 <div className="flex flex-col gap-6 mt-10">
-                  <h2 className="mb-5 text-2xl font-semibold text-left">
+                  <h2 className="text-xl font-semibold text-left">
                     Postingan Terbaru :
                   </h2>
                   <div className="flex flex-wrap pb-10 md:gap-x-5 gap-y-5">
@@ -87,7 +87,7 @@ export default function Home() {
 
                     <button
                       onClick={loadMorePosts}
-                      className="px-4 py-2 mx-auto transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+                      className="px-2 py-2 mx-auto text-sm transition duration-75 ease-in-out rounded-md md:px-4 md:py-3 md:text-base text-primary outline outline-2 hover:bg-primary hover:text-white"
                     >
                       Muat Lebih Banyak
                     </button>
