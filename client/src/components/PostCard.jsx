@@ -29,7 +29,7 @@ export default function PostCard({ post, cls }) {
       <div className="top-0 p-5">
         {post?.categories.map((category) => (
           <span
-            className="px-2 py-1 mr-2 text-xs rounded-md md:text-base text-primary bg-primary bg-opacity-10"
+            className="px-2 py-1 mr-2 text-xs rounded-md md:text-sm text-primary bg-primary bg-opacity-10"
             key={category._id}
           >
             {category.title}
@@ -56,9 +56,11 @@ export default function PostCard({ post, cls }) {
             </div>
           )}
         </span>
-        <p className="h-10 mt-4 overflow-hidden text-xs text-gray-400 md:text-sm">
-          {truncateCaption(post?.caption, 100)}
-        </p>
+        {post?.caption && (
+          <p className="mt-4 overflow-hidden text-xs text-gray-400 md:text-sm">
+            {truncateCaption(post?.caption, 100)}
+          </p>
+        )}
         <div className="flex items-center justify-between mt-4 flex-nowrap">
           <div className="flex items-center gap-x-2 md:gap-x-2.5">
             <img

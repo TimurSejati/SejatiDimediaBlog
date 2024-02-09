@@ -64,7 +64,7 @@ export default function Home() {
             <>
               {data?.data?.posts && data?.data?.posts.length > 0 && (
                 <div className="flex flex-col gap-6 mt-10">
-                  <h2 className="text-xl font-semibold text-left">
+                  <h2 className="text-base font-semibold text-left md:text-xl">
                     Postingan Terbaru :
                   </h2>
                   <div className="flex flex-wrap pb-10 md:gap-x-5 gap-y-5">

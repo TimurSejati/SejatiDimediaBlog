@@ -147,7 +147,7 @@ export default function PostPage() {
                 {data?.post?.user.username}
               </span>
               {data?.post?.tags && (
-                <div>
+                <div className="flex">
                   {data?.post?.tags.map((tag, index) => (
                     <div
                       className="flex items-center mr-1 text-xs lg:text-base"

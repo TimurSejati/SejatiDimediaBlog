@@ -12,50 +12,7 @@ export default function FooterCom() {
   return (
     <Footer container className="border border-t-8 border-primary">
       <div className="w-full mx-auto max-w-7xl">
-        <div className="grid justify-between w-full sm:flex md:grid-cols-1">
-          {/* <div className="grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6">
-            <div>
-              <Footer.Title title="About" />
-              <Footer.LinkGroup col>
-                <Footer.Link
-                  href="https://www.100jsprojects.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  100 JS Projects
-                </Footer.Link>
-                <Footer.Link
-                  href="/about"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Sejati Dimedia Blog
-                </Footer.Link>
-              </Footer.LinkGroup>
-            </div>
-            <div>
-              <Footer.Title title="Follow us" />
-              <Footer.LinkGroup col>
-                <Footer.Link
-                  href="https://www.github.com/sahandghavidel"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Github
-                </Footer.Link>
-                <Footer.Link href="#">Discord</Footer.Link>
-              </Footer.LinkGroup>
-            </div>
-            <div>
-              <Footer.Title title="Legal" />
-              <Footer.LinkGroup col>
-                <Footer.Link href="#">Privacy Policy</Footer.Link>
-                <Footer.Link href="#">Terms &amp; Conditions</Footer.Link>
-              </Footer.LinkGroup>
-            </div>
-          </div> */}
-        </div>
-        <div className="w-full sm:flex sm:items-center sm:justify-between">
+        <div className="flex flex-col items-center w-full md:flex-row sm:items-center md:justify-between">
           <div className="mt-5">
             <Link
               to="/"
