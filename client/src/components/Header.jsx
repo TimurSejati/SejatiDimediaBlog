@@ -131,7 +131,7 @@ export default function Header() {
   // };
 
   return (
-    <Navbar className="sticky top-0 left-0 right-0 border-b-2 z-[9999]">
+    <Navbar className="sticky top-0 left-0 right-0 border-b-2 z-[9999] mx-2">
       <Link
         to="/"
         className="self-center text-sm font-semibold whitespace-nowrap sm:text-xl dark:text-white"
