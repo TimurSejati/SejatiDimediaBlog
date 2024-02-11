@@ -106,7 +106,7 @@ export default function PostPage() {
       <article className="flex-1">
         <BreadCrumbs data={breadCrumbsData} />
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-medium font-roboto text-dark-hard md:text-[42px] md:mb-4">
+          <h1 className="text-xl font-medium font-roboto text-dark-hard md:text-[36px] md:mb-4">
             {data?.post?.title}
           </h1>
           <div>

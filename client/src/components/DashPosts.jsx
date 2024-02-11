@@ -145,7 +145,7 @@ export default function DashPosts() {
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    {post.categories.map((category) => (
+                    {post?.categories?.map((category) => (
                       <small
                         className="p-1.5 mr-1 text-xs text-white rounded-md bg-primary"
                         key={category._id}
@@ -155,7 +155,7 @@ export default function DashPosts() {
                     ))}
                   </Table.Cell>
                   <Table.Cell>
-                    {post.tags.map((tag) => (
+                    {post?.tags?.map((tag) => (
                       <small
                         className="p-1.5 mr-1 text-xs text-white rounded-md bg-red-500"
                         key={tag._id}

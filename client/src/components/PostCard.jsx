@@ -58,7 +58,7 @@ export default function PostCard({ post, cls }) {
         </span>
         {post?.caption && (
           <p className="mt-4 overflow-hidden text-xs text-gray-400 md:text-sm">
-            {truncateCaption(post?.caption, 100)}
+            {truncateCaption(post?.caption, 90)}
           </p>
         )}
         <div className="flex items-center justify-between mt-4 flex-nowrap">

@@ -214,31 +214,31 @@ const CreatePost2 = () => {
           </div>
           <div className="w-full d-form-control">
             <label className="mr-2 d-label" htmlFor="title">
-              <span className="d-label-text">Title</span>
+              <span className="d-label-text">Judul</span>
             </label>
             <input
               id="title"
               value={title}
-              className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+              className="d-input w-full d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="title"
+              placeholder="Jduul"
             />
           </div>
           <div className="w-full d-form-control">
             <label className="mr-2 d-label" htmlFor="caption">
-              <span className="d-label-text">caption</span>
+              <span className="d-label-text">Keterangan</span>
             </label>
-            <input
+            <textarea
               id="caption"
               value={caption}
-              className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+              className="d-input w-full rounded-md d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
               onChange={(e) => setCaption(e.target.value)}
-              placeholder="caption"
+              placeholder="Keterangan"
             />
           </div>
           <div className="w-full d-form-control">
             <label className="mr-2 d-label" htmlFor="slug">
-              <span className="d-label-text">slug</span>
+              <span className="d-label-text">Slug</span>
             </label>
             <input
               id="slug"

@@ -86,9 +86,10 @@ const UpdatePost2 = () => {
   useEffect(() => {
     setInitialPhoto(data?.post?.photo);
     setCategories(data?.post?.categories.map((item) => item._id));
-    setTags(data?.post?.tags.map((item) => item._id));
+    setTags(data?.post?.tags?.map((item) => item._id));
     setTitle(data?.post?.title);
     setCaption(data?.post?.caption);
+    setBody(data?.post?.body);
     // setTags(data?.tags);
   }, [data]);
 
@@ -248,38 +249,39 @@ const UpdatePost2 = () => {
                 </Link>
               ))}
             </div>
-            <div className="w-full d-form-control">
+            <div className="w-full my-2 d-form-control">
               <label className="mr-2 d-label" htmlFor="title">
-                <span className="d-label-text">Title</span>
+                <span className="d-label-text">Judul</span>
               </label>
               <input
                 id="title"
                 value={title}
-                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                className="w-full d-input d-input-bordered border-slate-500 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="title"
+                placeholder="Judul"
               />
             </div>
-            <div className="w-full d-form-control">
+            <div className="w-full my-2 d-form-control">
               <label className="mr-2 d-label" htmlFor="caption">
-                <span className="d-label-text">caption</span>
+                <span className="d-label-text">Keterangan</span>
               </label>
-              <input
+              <textarea
                 id="caption"
                 value={caption}
-                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                className="rounded-md w-full d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
                 onChange={(e) => setCaption(e.target.value)}
-                placeholder="caption"
+                placeholder="Keterangan"
               />
             </div>
-            <div className="w-full d-form-control">
+            <div className="w-full my-2 d-form-control">
               <label className="mr-2 d-label" htmlFor="slug">
-                <span className="d-label-text">slug</span>
+                <span className="d-label-text">Slug</span>
               </label>
               <input
+                disabled
                 id="slug"
                 value={postSlug}
-                className="w-1/2 d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                className="w-full d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
                 onChange={(e) =>
                   setPostSlug(e.target.value.replace(/\s+/g, "-").toLowerCase())
                 }
@@ -305,7 +307,7 @@ const UpdatePost2 = () => {
                 </label>
                 <MultiSelectTagDropdown
                   loadOptions={promiseTagOptions}
-                  defaultValue={data?.post?.tags.map(tagToOption)}
+                  defaultValue={data?.post?.tags?.map(tagToOption)}
                   onChange={(newValue) =>
                     setTags(newValue.map((item) => item.value))
                   }
