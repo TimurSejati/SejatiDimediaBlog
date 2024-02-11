@@ -5,7 +5,7 @@ import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
 import { useQuery } from "@tanstack/react-query";
-import { getSinglePost, likePost } from "../../services/posts";
+import { getSinglePost, likePost, updatePostViews } from "../../services/posts";
 import BreadCrumbs from "../components/BreadCrumbs";
 
 import { generateHTML } from "@tiptap/html";
@@ -18,7 +18,7 @@ import parse from "html-react-parser";
 import Editor from "../components/editor/Editor";
 import { useSelector } from "react-redux";
 import SuggestedPosts from "../components/SuggestedPosts";
-import { HiPencilAlt, HiTag } from "react-icons/hi";
+import { HiEye, HiPencilAlt, HiTag } from "react-icons/hi";
 import { FaBookmark, FaThumbsUp } from "react-icons/fa";
 import toast from "react-hot-toast";
 
@@ -44,6 +44,11 @@ export default function PostPage() {
         const postData = await getSinglePost(blogSlug);
         setData(postData);
         setIsLoading(false); // Set loading state to false when fetching is complete
+
+        await updatePostViews({
+          postId: postData.post._id,
+          token: currentUser?.token,
+        });
       } catch (error) {
         setIsError(true); // Set error state to true if there's an error
         setIsLoading(false); // Set loading state to false even if there's an error
@@ -120,16 +125,25 @@ export default function PostPage() {
             ))}
           </div>
         </div>
-        <span className="flex items-center gap-1 mb-5 text-xs font-medium text-dark-light md:text-base">
-          <HiPencilAlt />
-          <span>
-            {new Date(data?.post?.createdAt).toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
-          </span>
-        </span>
+        <div>
+          <div className="flex gap-4">
+            <span className="flex items-center gap-1 mb-5 text-xs font-medium text-dark-light md:text-base">
+              <HiPencilAlt />
+              <span>
+                {new Date(data?.post?.createdAt).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </span>
+            </span>
+            <span className="flex items-center gap-1 mb-5 text-xs font-medium text-dark-light md:text-base">
+              <HiEye />
+              <span>{data?.post?.views?.length}x Dikunjungi</span>
+            </span>
+          </div>
+        </div>
+
         <img
           className="w-full rounded-xl max-h-[600px]"
           src={data?.post?.photo}

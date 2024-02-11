@@ -139,3 +139,26 @@ export const likePost = async ({ postId, token }) => {
     throw new Error(error.message);
   }
 };
+
+export const updatePostViews = async ({ postId, token }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Viewing-Post": token ? "" : "next",
+      },
+    };
+
+    const data = await createAxiosInstance().put(
+      `/api/post2/view/${postId}`,
+      {},
+      config
+    );
+
+    return { data };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};

@@ -279,6 +279,51 @@ export const likePost = async (req, res, next) => {
   }
 };
 
+const viewPost = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const post = await Post2.findById(postId);
+
+    if (req.user._id == "65abd134d93917379a2c5b0a") {
+      return;
+    }
+
+    // Check if the user is logged in
+    // Extract timestamp for comparison
+    const currentTimestamp = new Date();
+    if (req.user) {
+      const existingViewer = post.views.find(
+        (view) =>
+          view?.viewerId?.toString() === req.user._id.toString() &&
+          view?.timestamp?.toDateString() === currentTimestamp.toDateString()
+      );
+
+      if (!existingViewer) {
+        // Add logged-in user as viewer with current timestamp
+        post.views.push({
+          viewerId: req.user._id,
+          timestamp: currentTimestamp,
+        });
+      } else {
+        // Viewer already exists for the current day, do not push again
+        console.log("Viewer already exists for the current day");
+      }
+    } else {
+      // Add guest as viewer
+      post.views.push({ viewerId: null });
+    }
+
+    // Increment views
+    // post.views += 1;
+    await post.save();
+
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export {
   createPost,
   updatePost,
@@ -286,4 +331,5 @@ export {
   getPost,
   getAllPost,
   getAllPostFront,
+  viewPost,
 };

@@ -2,6 +2,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
 export const authGuard = async (req, res, next) => {
+  if (req.headers["x-viewing-post"] == "next") {
+    next();
+    return;
+  }
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")

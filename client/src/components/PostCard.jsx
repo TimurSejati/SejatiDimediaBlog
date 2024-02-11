@@ -1,6 +1,12 @@
 import { BsCheckLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { HiCalendar, HiPencil, HiPencilAlt, HiTag } from "react-icons/hi";
+import {
+  HiCalendar,
+  HiEye,
+  HiPencil,
+  HiPencilAlt,
+  HiTag,
+} from "react-icons/hi";
 import { FaThumbsUp } from "react-icons/fa";
 
 export default function PostCard({ post, cls }) {
@@ -38,7 +44,7 @@ export default function PostCard({ post, cls }) {
         <h2 className="font-roboto font-semibold text-lg text-dark-soft md:text-2xl lg:text-[20px] mt-2">
           <Link to={`/blog/${post?.slug}`}>{post?.title}</Link>
         </h2>
-        <span className="flex items-center gap-4 text-xs font-medium text-dark-light md:text-xs">
+        <span className="flex items-center gap-4 mt-2 text-xs font-medium text-dark-light md:text-xs">
           <div className="flex items-center gap-1">
             <HiPencilAlt />
             <span>
@@ -53,6 +59,12 @@ export default function PostCard({ post, cls }) {
             <div className="flex items-center gap-1">
               <FaThumbsUp />
               <span>{post?.numberOfLikes} Disukai</span>
+            </div>
+          )}
+          {post?.views?.length > 0 && (
+            <div className="flex items-center gap-1">
+              <HiEye />
+              <span>{post?.views.length}x Dikunjungi</span>
             </div>
           )}
         </span>

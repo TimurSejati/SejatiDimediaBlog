@@ -24,6 +24,12 @@ const PostSchema = new Schema(
       type: Number,
       default: 0,
     },
+    views: [
+      {
+        viewerId: { type: Schema.Types.ObjectId, ref: "User", default: null },
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -7,6 +7,7 @@ import {
   getPost,
   likePost,
   updatePost,
+  viewPost,
 } from "../controllers/post2.controller.js";
 import { adminGuard, authGuard } from "../middleware/authMiddleware.js";
 import { verifyToken } from "../utils/verifyUser.js";
@@ -23,5 +24,6 @@ router
   .get(getPost);
 
 router.route("/likePost/:postId").put(authGuard, likePost);
+router.route("/view/:postId").put(authGuard, viewPost);
 
 export default router;
