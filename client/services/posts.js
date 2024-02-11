@@ -20,6 +20,7 @@ export const getAllPosts = async (
     throw new Error(error.message);
   }
 };
+
 export const getAllPostsFront = async (
   searchKeyword = "",
   userId = "",

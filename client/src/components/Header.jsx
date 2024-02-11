@@ -1,13 +1,22 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon, FaSun } from "react-icons/fa";
+import {
+  FaMoon,
+  FaSun,
+  FaUser,
+  FaUserAlt,
+  FaUserAltSlash,
+  FaUserCog,
+} from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import createAxiosInstance from "../../utils/axiosInstance";
 import { images } from "../constants";
+import { HiBookmark, HiLogout, HiUser } from "react-icons/hi";
+import { FiLogOut } from "react-icons/fi";
 
 const NavItem = ({ item }) => {
   const path = useLocation().pathname;
@@ -184,10 +193,21 @@ export default function Header() {
               </span>
             </Dropdown.Header>
             <Link to={"/dashboard?tab=profile"}>
-              <Dropdown.Item>Profil</Dropdown.Item>
+              <Dropdown.Item>
+                <HiUser className="mr-1" /> Profil
+              </Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleSignout}>Keluar</Dropdown.Item>
+            <Link to={"/dashboard?tab=profile"}>
+              <Dropdown.Item>
+                <HiBookmark className="mr-1" /> Penanda
+              </Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleSignout}>
+              <HiLogout className="mr-1" />
+              Keluar
+            </Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/sign-in">

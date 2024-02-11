@@ -1,12 +1,26 @@
 import { FiSearch } from "react-icons/fi";
 import { images } from "../constants";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Hero = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchData, setSearchData] = useState("");
+  const { posts } = useSelector((state) => state.posts);
+
+  const handleSearchChange = (value) => {
+    setSearchTerm(value);
+
+    const filteredPost =
+      posts &&
+      posts.filter((post) =>
+        post.title.toLowerCase().includes(value.toLowerCase())
+      );
+    setSearchData(filteredPost);
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -27,6 +41,7 @@ const Hero = () => {
           wawasan yang mendalam, membuka pintu menuju pengetahuan yang tak
           terbatas.
         </p>
+        {/* SearchInput */}
         <div className="flex flex-col gap-y-2.5 mt-10 relative xl:mt-10">
           <div className="relative">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[#959EAD]" />
@@ -34,8 +49,50 @@ const Hero = () => {
               className="placeholder:font-bold font-semibold text-dark-soft placeholder:text-[#959EAD] rounded-lg pl-12 pr-3 w-full py-3 focus:outline-none shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] md:py-4 border-none"
               placeholder="Temukan artikel"
               type="text"
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              // onChange={(e) => setSearchTerm(e.target.value)}
             />
+            {/* Searchbox */}
+            <div className="absolute z-[999] w-full rounded-lg bg-[#fff] shadow-lg">
+              {searchTerm &&
+                searchData &&
+                searchData.map((post, index) => {
+                  const d = post.title;
+                  const title = d.replace(/\s+/g, "-");
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center h-[70px] shadow-sm"
+                    >
+                      <div>
+                        <Link to={`/blog/${post.slug}`}>
+                          <div className="flex items-center m-1.5">
+                            <img
+                              src={post.photo}
+                              alt={post.title}
+                              className="w-[60px] h-[60px] mr-[10px] rounded-md"
+                            />
+                            <div>
+                              <div className="truncate text-ellipsis w-[350px] sm:w-full">
+                                {title}
+                              </div>
+                              {post?.categories.map((category) => (
+                                <span
+                                  className="px-2 py-1 mr-2 text-xs rounded-md text-primary bg-primary bg-opacity-10"
+                                  key={category._id}
+                                >
+                                  {category.title}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
           <button
             onClick={handleSearch}
@@ -50,6 +107,7 @@ const Hero = () => {
             Cari
           </button> */}
         </div>
+
         <div className="flex flex-col mt-4 lg:flex-row lg:items-start lg:flex-nowrap lg:gap-x-4 lg:mt-7">
           <span className="mt-2 text-sm italic font-semibold text-dark-light lg:mt-4 lg:text-sm xl:text-base">
             Tag Populer:

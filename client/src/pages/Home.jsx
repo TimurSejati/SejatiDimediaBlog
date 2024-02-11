@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
 // import CallToAction from "../components/CallToAction";
 import PostCard from "../components/PostCard";
 import Hero from "../components/Hero";
 import { useQuery } from "@tanstack/react-query";
-import { getAllPosts, getAllPostsFront } from "../../services/posts";
+import { getAllPostsFront } from "../../services/posts";
 import { toast } from "react-hot-toast";
 import PostCardSkeleton from "../components/PostCardSkeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getAllPosts } from "../redux/post/postSlice";
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
   // const [posts, setPosts] = useState([]);
 
   // useEffect(() => {
@@ -36,6 +38,21 @@ export default function Home() {
       console.log(error);
     },
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchPostsAllWithoutLimit = await getAllPostsFront("", "", 1000);
+        if (fetchPostsAllWithoutLimit.data) {
+          dispatch(getAllPosts(fetchPostsAllWithoutLimit.data?.posts));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const loadMorePosts = () => {
     // fetchNextPage();

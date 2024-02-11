@@ -284,14 +284,13 @@ const viewPost = async (req, res) => {
     const postId = req.params.postId;
     const post = await Post2.findById(postId);
 
-    if (req.user._id == "65abd134d93917379a2c5b0a") {
-      return;
-    }
-
     // Check if the user is logged in
     // Extract timestamp for comparison
     const currentTimestamp = new Date();
     if (req.user) {
+      if (req?.user?._id == "65abd134d93917379a2c5b0a") {
+        return;
+      }
       const existingViewer = post.views.find(
         (view) =>
           view?.viewerId?.toString() === req.user._id.toString() &&

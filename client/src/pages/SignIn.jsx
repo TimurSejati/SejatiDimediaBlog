@@ -28,7 +28,6 @@ export default function SignIn() {
     try {
       dispatch(signInStart());
       const res = await signIn(formData);
-      console.log(res.data, "res---");
       if (res.data.status !== 200) {
         dispatch(signInFailure(res.data.message));
       }
