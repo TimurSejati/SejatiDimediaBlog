@@ -74,7 +74,7 @@ const Hero = () => {
                               className="w-[60px] h-[60px] mr-[10px] rounded-md"
                             />
                             <div>
-                              <div className="truncate text-ellipsis w-[350px] sm:w-full">
+                              <div className="truncate text-ellipsis w-[240px] sm:w-full">
                                 {title}
                               </div>
                               {post?.categories.map((category) => (
