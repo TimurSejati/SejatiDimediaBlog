@@ -289,13 +289,8 @@ const viewPost = async (req, res) => {
     const currentTimestamp = new Date();
     if (req.user) {
       if (req?.user?._id == "65abd134d93917379a2c5b0a") {
-        return;
+        return res.json({ message: "Nothing view" });
       }
-      const existingViewer = post.views.find(
-        (view) =>
-          view?.viewerId?.toString() === req.user._id.toString() &&
-          view?.timestamp?.toDateString() === currentTimestamp.toDateString()
-      );
 
       if (!existingViewer) {
         // Add logged-in user as viewer with current timestamp
@@ -316,7 +311,7 @@ const viewPost = async (req, res) => {
     // post.views += 1;
     await post.save();
 
-    res.json(post);
+    return res.json({ message: "success view" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });

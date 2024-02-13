@@ -31,15 +31,11 @@ app.use(
   //   origin: "http://localhost:5173",
   //   credentials: true,
   //   methods: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-  //   allowedHeaders: ["Content-Type", "Authorization"], // Additional allowed headers
-  //   exposedHeaders: ["Content-Length", "Authorization"],
   // })
   cors({
     origin: "https://sejatidimedia-blog.vercel.app",
     credentials: true,
     methods: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-    allowedHeaders: ["Content-Type", "Authorization"], // Additional allowed headers
-    exposedHeaders: ["Content-Length", "Authorization"],
   })
 );
 
