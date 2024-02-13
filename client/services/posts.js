@@ -125,7 +125,6 @@ export const likePost = async ({ postId, token }) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log(config, "ini token like post");
 
     const data = await createAxiosInstance().put(
       `/api/post2/likePost/${postId}`,
@@ -152,6 +151,31 @@ export const updatePostViews = async ({ postId, token }) => {
 
     const data = await createAxiosInstance().put(
       `/api/post2/view/${postId}`,
+      {},
+      config
+    );
+
+    console.log(data);
+
+    return { data };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const bookmarkPost = async ({ postId, token }) => {
+  try {
+    console.log("connect service bookmark");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const data = await createAxiosInstance().put(
+      `/api/user/bookmark/${postId}`,
       {},
       config
     );

@@ -1,13 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentUser: null,
+  bookmarks: [],
   error: null,
   loading: false,
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     signInStart: (state) => {
@@ -54,6 +55,9 @@ const userSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
+    bookmarkArticles: (state, action) => {
+      state.bookmarks = action.payload;
+    },
   },
 });
 
@@ -68,6 +72,7 @@ export const {
   deleteUserSuccess,
   deleteUserFailure,
   signoutSuccess,
+  bookmarkArticles,
 } = userSlice.actions;
 
 export default userSlice.reducer;

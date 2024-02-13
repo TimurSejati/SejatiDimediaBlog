@@ -6,6 +6,7 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
+  bookmarkArticles,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
 import { images } from "../constants";
@@ -34,6 +35,7 @@ export default function SignIn() {
 
       if (res.data.status === 200) {
         dispatch(signInSuccess(res.data.data));
+        dispatch(bookmarkArticles(res.data.data.bookmarks));
         toast.success(res.data.data.message);
         navigate("/");
       }

@@ -291,6 +291,11 @@ const viewPost = async (req, res) => {
       if (req?.user?._id == "65abd134d93917379a2c5b0a") {
         return res.json({ message: "Nothing view" });
       }
+      const existingViewer = post.views.find(
+        (view) =>
+          view?.viewerId?.toString() === req.user._id.toString() &&
+          view?.timestamp?.toDateString() === currentTimestamp.toDateString()
+      );
 
       if (!existingViewer) {
         // Add logged-in user as viewer with current timestamp

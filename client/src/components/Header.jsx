@@ -1,7 +1,15 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  Modal,
+  Navbar,
+  TextInput,
+} from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import {
+  FaBookmark,
   FaMoon,
   FaSun,
   FaUser,
@@ -15,7 +23,12 @@ import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import createAxiosInstance from "../../utils/axiosInstance";
 import { images } from "../constants";
-import { HiBookmark, HiLogout, HiUser } from "react-icons/hi";
+import {
+  HiBookmark,
+  HiLogout,
+  HiOutlineExclamationCircle,
+  HiUser,
+} from "react-icons/hi";
 import { FiLogOut } from "react-icons/fi";
 
 const NavItem = ({ item }) => {
@@ -81,11 +94,12 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, bookmarks } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const [searchTerm, setSearchTerm] = useState("");
 
   const [dropdown, setDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleDropdownHandler = () => {
     setDropdown((curState) => {
@@ -130,6 +144,8 @@ export default function Header() {
       console.log(error.message);
     }
   };
+
+  const handleBookmark = async () => {};
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -198,7 +214,7 @@ export default function Header() {
               </Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Link to={"/dashboard?tab=profile"}>
+            <Link onClick={() => setShowModal(true)}>
               <Dropdown.Item>
                 <HiBookmark className="mr-1" /> Penanda
               </Dropdown.Item>
@@ -228,6 +244,56 @@ export default function Header() {
           </div>
         ))}
       </Navbar.Collapse>
+      <Modal
+        className="z-[99999]"
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header>
+          <div className="flex items-center text-center">
+            <h3 className="m-6 text-lg text-gray-500 dark:text-gray-400">
+              Blog yang kamu beri penanda
+            </h3>
+          </div>
+        </Modal.Header>
+
+        <Modal.Body>
+          <div className="">
+            {bookmarks?.map((bookmark) => (
+              <div
+                key={bookmark._id}
+                className="flex items-center justify-between my-4"
+              >
+                <div className="flex items-center gap-2">
+                  <img
+                    className="w-10 h-10"
+                    src={bookmark.photo}
+                    alt={bookmark.photo}
+                  />
+                  <Link to={`/blog/${bookmark?.slug}`} key={bookmark._id}>
+                    {bookmark.title}
+                  </Link>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => handleBookmark(bookmark._id)}
+                    // className={`text-gray-400 hover:text-blue-500 ${
+                    //   bookmarks?.some(
+                    //     (bookmark) => bookmark._id === data?.post?._id
+                    //   ) && "!text-blue-500"
+                    // }`}
+                  >
+                    <FaBookmark className="text-lg lg:text-2xl" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
+      </Modal>
     </Navbar>
   );
 }

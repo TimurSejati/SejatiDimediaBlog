@@ -294,6 +294,7 @@ export default function DashProfile() {
         </Alert>
       )}
       <Modal
+        className="z-[99999]"
         show={showModal}
         onClose={() => setShowModal(false)}
         popup
@@ -304,14 +305,14 @@ export default function DashProfile() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 text-gray-400 h-14 w-14 dark:text-gray-200" />
             <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete your account?
+              Kamu yakin akan menghapus akun anda
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={handleDeleteUser}>
-                Yes, I'm sure
+                Iya, yakin
               </Button>
               <Button color="gray" onClick={() => setShowModal(false)}>
-                No, cancel
+                Tidak, batalkan
               </Button>
             </div>
           </div>

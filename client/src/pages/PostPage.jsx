@@ -5,7 +5,12 @@ import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
 import { useQuery } from "@tanstack/react-query";
-import { getSinglePost, likePost, updatePostViews } from "../../services/posts";
+import {
+  bookmarkPost,
+  getSinglePost,
+  likePost,
+  updatePostViews,
+} from "../../services/posts";
 import BreadCrumbs from "../components/BreadCrumbs";
 
 import { generateHTML } from "@tiptap/html";
@@ -16,17 +21,19 @@ import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import parse from "html-react-parser";
 import Editor from "../components/editor/Editor";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SuggestedPosts from "../components/SuggestedPosts";
 import { HiEye, HiPencilAlt, HiTag } from "react-icons/hi";
 import { FaBookmark, FaThumbsUp } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { bookmarkArticles } from "../redux/user/userSlice";
 
 export default function PostPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { blogSlug } = useParams();
   const [breadCrumbsData, setbreadCrumbsData] = useState([]);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, bookmarks } = useSelector((state) => state.user);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -57,7 +64,7 @@ export default function PostPage() {
     };
 
     fetchData(); // Call fetchData function
-  }, [blogSlug]);
+  }, [blogSlug, currentUser]);
 
   useEffect(() => {
     setbreadCrumbsData([
@@ -96,8 +103,33 @@ export default function PostPage() {
     }
   };
 
-  const handleBookmark = () => {
-    toast.success("Fitur dalam pengerjaan");
+  const handleBookmark = async (postId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const res = await bookmarkPost({ postId, token: currentUser.token });
+      if (res.data.status == 201) {
+        if (
+          res.data?.data?.bookmarks?.some((bookmark) => bookmark._id == postId)
+        ) {
+          toast.success("Anda berhasil menandai artikel ini");
+        }
+        // setData((prevData) => ({
+        //   ...prevData,
+        //   post: {
+        //     ...prevData.post,
+        //     likes: res.data.data.likes,
+        //     numberOfLikes: res.data.data.numberOfLikes,
+        //   },
+        // }));
+      }
+      dispatch(bookmarkArticles(res.data.data.bookmarks));
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   if (isLoading)
@@ -210,12 +242,12 @@ export default function PostPage() {
               <button
                 type="button"
                 onClick={() => handleBookmark(data?.post?._id)}
-                className={`text-gray-400 hover:text-blue-500`}
-                // className={`text-gray-400 hover:text-blue-500 ${
-                //   currentUser &&
-                //   data?.post?.likes?.includes(currentUser._id) &&
-                //   "!text-blue-500"
-                // }`}
+                // className={`text-gray-400 hover:text-blue-500`}
+                className={`text-gray-400 hover:text-blue-500 ${
+                  bookmarks?.some(
+                    (bookmark) => bookmark._id === data?.post?._id
+                  ) && "!text-blue-500"
+                }`}
               >
                 <FaBookmark className="text-lg lg:text-2xl" />
               </button>

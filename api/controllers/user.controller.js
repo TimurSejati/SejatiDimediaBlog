@@ -122,7 +122,12 @@ export const getUsers = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userId).populate([
+      {
+        path: "bookmarks",
+        select: ["title", "photo"],
+      },
+    ]);
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
@@ -130,5 +135,49 @@ export const getUser = async (req, res, next) => {
     res.status(200).json(rest);
   } catch (error) {
     next(error);
+  }
+};
+
+export const addBookmark = async (req, res) => {
+  const postId = req.params.postId;
+  const userId = req.user._id; // Assuming you're using authentication middleware to get the user ID
+
+  try {
+    const user = await User.findById(userId).populate("bookmarks", [
+      "title",
+      "photo",
+      "slug",
+    ]);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the post is already bookmarked by the user
+    const isBookmarked = user.bookmarks.some((bookmark) =>
+      bookmark._id.equals(postId)
+    );
+    if (isBookmarked) {
+      // If already bookmarked, remove it from the bookmarks array
+      user.bookmarks = user.bookmarks.filter(
+        (bookmark) => !bookmark._id.equals(postId)
+      );
+      await user.save();
+      return res.status(200).json({
+        message: "Post unbookmarked successfully",
+        bookmarks: user.bookmarks,
+      });
+    } else {
+      // If not bookmarked, add it to the bookmarks array
+      user.bookmarks.push(postId);
+      await user.save();
+      return res.status(201).json({
+        message: "Post bookmarked successfully",
+        bookmarks: user.bookmarks,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
