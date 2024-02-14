@@ -234,7 +234,7 @@ export default function Header() {
             <Dropdown.Divider />
             <Link onClick={() => setShowModal(true)}>
               <Dropdown.Item>
-                <HiBookmark className="mr-1" /> Penanda ({bookmarks.length})
+                <HiBookmark className="mr-1" /> Penanda ({bookmarks?.length})
               </Dropdown.Item>
             </Link>
             <Dropdown.Divider />
