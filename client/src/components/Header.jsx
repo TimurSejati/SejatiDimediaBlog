@@ -279,7 +279,7 @@ export default function Header() {
 
         <Modal.Body>
           <div className="">
-            {bookmarks.length == 0 && (
+            {bookmarks?.length == 0 && (
               <div className="flex items-center gap-2 mx-2 text-gray-500 dark:text-gray-400">
                 <GoInfo />
                 <h1>Belum ada penanda artikel</h1>
