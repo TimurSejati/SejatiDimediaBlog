@@ -11,6 +11,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import {
   FaBookmark,
   FaMoon,
+  FaRegBookmark,
   FaSun,
   FaUser,
   FaUserAlt,
@@ -19,17 +20,15 @@ import {
 } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
-import { signoutSuccess } from "../redux/user/userSlice";
+import { bookmarkArticles, signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import createAxiosInstance from "../../utils/axiosInstance";
 import { images } from "../constants";
-import {
-  HiBookmark,
-  HiLogout,
-  HiOutlineExclamationCircle,
-  HiUser,
-} from "react-icons/hi";
+import { HiBookmark, HiLogout, HiUser } from "react-icons/hi";
+import { GoBookmarkSlashFill, GoInfo } from "react-icons/go";
 import { FiLogOut } from "react-icons/fi";
+import { bookmarkPost } from "../../services/posts";
+import toast from "react-hot-toast";
 
 const NavItem = ({ item }) => {
   const path = useLocation().pathname;
@@ -145,15 +144,34 @@ export default function Header() {
     }
   };
 
-  const handleBookmark = async () => {};
+  const handleBookmark = async (postId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const urlParams = new URLSearchParams(location.search);
-  //   urlParams.set("searchTerm", searchTerm);
-  //   const searchQuery = urlParams.toString();
-  //   navigate(`/search?${searchQuery}`);
-  // };
+      const res = await bookmarkPost({ postId, token: currentUser.token });
+      if (res.data.status == 201) {
+        if (
+          res.data?.data?.bookmarks?.some((bookmark) => bookmark._id == postId)
+        ) {
+          toast.success("Anda berhasil menandai artikel ini");
+        }
+        // setData((prevData) => ({
+        //   ...prevData,
+        //   post: {
+        //     ...prevData.post,
+        //     likes: res.data.data.likes,
+        //     numberOfLikes: res.data.data.numberOfLikes,
+        //   },
+        // }));
+      }
+      dispatch(bookmarkArticles(res.data.data.bookmarks));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <Navbar className="sticky top-0 left-0 right-0 border-b-2 z-[9999] mx-2">
@@ -216,7 +234,7 @@ export default function Header() {
             <Dropdown.Divider />
             <Link onClick={() => setShowModal(true)}>
               <Dropdown.Item>
-                <HiBookmark className="mr-1" /> Penanda
+                <HiBookmark className="mr-1" /> Penanda ({bookmarks.length})
               </Dropdown.Item>
             </Link>
             <Dropdown.Divider />
@@ -253,20 +271,26 @@ export default function Header() {
       >
         <Modal.Header>
           <div className="flex items-center text-center">
-            <h3 className="m-6 text-lg text-gray-500 dark:text-gray-400">
-              Blog yang kamu beri penanda
+            <h3 className="m-2 text-lg text-gray-500 dark:text-gray-400">
+              Penanda
             </h3>
           </div>
         </Modal.Header>
 
         <Modal.Body>
           <div className="">
+            {bookmarks.length == 0 && (
+              <div className="flex items-center gap-2 mx-2 text-gray-500 dark:text-gray-400">
+                <GoInfo />
+                <h1>Belum ada penanda artikel</h1>
+              </div>
+            )}
             {bookmarks?.map((bookmark) => (
               <div
                 key={bookmark._id}
                 className="flex items-center justify-between my-4"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-sm">
                   <img
                     className="w-10 h-10"
                     src={bookmark.photo}
@@ -280,13 +304,8 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={() => handleBookmark(bookmark._id)}
-                    // className={`text-gray-400 hover:text-blue-500 ${
-                    //   bookmarks?.some(
-                    //     (bookmark) => bookmark._id === data?.post?._id
-                    //   ) && "!text-blue-500"
-                    // }`}
                   >
-                    <FaBookmark className="text-lg lg:text-2xl" />
+                    <GoBookmarkSlashFill className="text-lg text-blue-500 lg:text-2xl" />
                   </button>
                 </div>
               </div>

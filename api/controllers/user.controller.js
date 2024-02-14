@@ -143,11 +143,7 @@ export const addBookmark = async (req, res) => {
   const userId = req.user._id; // Assuming you're using authentication middleware to get the user ID
 
   try {
-    const user = await User.findById(userId).populate("bookmarks", [
-      "title",
-      "photo",
-      "slug",
-    ]);
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -163,17 +159,31 @@ export const addBookmark = async (req, res) => {
         (bookmark) => !bookmark._id.equals(postId)
       );
       await user.save();
+      let getBookmarkList = await User.findById(userId).populate([
+        {
+          path: "bookmarks",
+          select: ["title", "photo"],
+        },
+      ]);
+
       return res.status(200).json({
-        message: "Post unbookmarked successfully",
-        bookmarks: user.bookmarks,
+        message: "Penanda berhasil dihilangkan",
+        bookmarks: getBookmarkList.bookmarks,
       });
     } else {
-      // If not bookmarked, add it to the bookmarks array
       user.bookmarks.push(postId);
       await user.save();
+
+      let getBookmarkList = await User.findById(userId).populate([
+        {
+          path: "bookmarks",
+          select: ["title", "photo"],
+        },
+      ]);
+
       return res.status(201).json({
-        message: "Post bookmarked successfully",
-        bookmarks: user.bookmarks,
+        message: "Penanda berhasil ditambahkan",
+        bookmarks: getBookmarkList.bookmarks,
       });
     }
   } catch (error) {

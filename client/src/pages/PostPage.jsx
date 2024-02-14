@@ -27,6 +27,7 @@ import { HiEye, HiPencilAlt, HiTag } from "react-icons/hi";
 import { FaBookmark, FaThumbsUp } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { bookmarkArticles } from "../redux/user/userSlice";
+import { GoBookmarkSlashFill } from "react-icons/go";
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -115,7 +116,7 @@ export default function PostPage() {
         if (
           res.data?.data?.bookmarks?.some((bookmark) => bookmark._id == postId)
         ) {
-          toast.success("Anda berhasil menandai artikel ini");
+          toast.success(res.data?.data?.message);
         }
         // setData((prevData) => ({
         //   ...prevData,
@@ -243,13 +244,18 @@ export default function PostPage() {
                 type="button"
                 onClick={() => handleBookmark(data?.post?._id)}
                 // className={`text-gray-400 hover:text-blue-500`}
-                className={`text-gray-400 hover:text-blue-500 ${
-                  bookmarks?.some(
-                    (bookmark) => bookmark._id === data?.post?._id
-                  ) && "!text-blue-500"
-                }`}
               >
-                <FaBookmark className="text-lg lg:text-2xl" />
+                {bookmarks?.some(
+                  (bookmark) => bookmark._id === data?.post?._id
+                ) ? (
+                  <GoBookmarkSlashFill
+                    className={`w-5 h-5 md:w-7 md:h-7  text-blue-500`}
+                  />
+                ) : (
+                  <FaBookmark
+                    className={`w-4 h-4 md:w-6 md:h-6 text-lg text-gray-400 hover:text-blue-500`}
+                  />
+                )}
               </button>
             </div>
           </div>
