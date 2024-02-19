@@ -1,10 +1,11 @@
-import { Button, Select, TextInput } from "flowbite-react";
+import { Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
-import { getAllPosts, getAllPostsFront } from "../../services/posts";
+import { getAllPostsFront } from "../../services/posts";
 import { getAllCategories } from "../../services/categories";
 import { getAllTags } from "../../services/tags";
+import { Helmet } from "react-helmet-async";
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -127,114 +128,124 @@ export default function Search() {
   };
 
   return (
-    <div className="flex flex-col mx-auto md:flex-row max-w-7xl">
-      <div className="flex flex-col w-full gap-8 py-7">
-        <div className="p-7">
-          <form
-            className="flex flex-col items-end justify-center gap-5 md:flex-row"
-            onSubmit={handleSubmit}
-          >
-            <div className="items-center w-full gap-1">
-              <label className="mb-1 font-semibold whitespace-nowrap">
-                Kata kunci
-              </label>
-              <TextInput
-                className="mt-1"
-                placeholder="Masukan Pencarian..."
-                id="searchTerm"
-                type="text"
-                value={sidebarData.searchTerm}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="items-center w-full gap-1">
-              <label className="font-semibold">Urutan</label>
-              <Select
-                className="mt-1"
-                onChange={handleChange}
-                value={sidebarData.sort}
-                id="sort"
-              >
-                <option value="desc">Terbaru</option>
-                <option value="asc">Terlama</option>
-              </Select>
-            </div>
-            <div className="items-center w-full gap-1">
-              <label className="font-semibold">Kategori</label>
-              <Select
-                className="mt-1"
-                onChange={handleChange}
-                value={sidebarData.category}
-                id="category"
-              >
-                <option value="">-</option>
-                {categories?.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.title}
-                  </option>
-                ))}
-              </Select>
-            </div>
-            <div className="items-center w-full gap-1">
-              <label className="font-semibold">Tag</label>
-              <Select
-                className="mt-1"
-                onChange={handleChange}
-                value={sidebarData.tag}
-                id="tag"
-              >
-                <option value="">-</option>
-                {tags?.map((tag) => (
-                  <option key={tag._id} value={tag._id}>
-                    {tag.title}
-                  </option>
-                ))}
-              </Select>
-            </div>
-            <div className="items-end w-full gap-1">
-              <label htmlFor="">&nbsp;</label>
-              <button
-                type="submit"
-                className="w-full px-4 py-2 mb-0.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
-              >
-                Cari
-              </button>
-              {/* <Button outline gradientDuoTone="purpleToPink">
+    <div>
+      <Helmet>
+        <title>Sejati Dimedia Blog - Pencarian Artikel</title>
+        <link rel="canonical" href="http://sejati-dimedia-blog.vercel.app" />
+        <meta
+          name="keywords"
+          content="Sejati Dimedia,Timur Dian Radha Sejati"
+        />
+      </Helmet>
+      <div className="flex flex-col mx-auto md:flex-row max-w-7xl">
+        <div className="flex flex-col w-full gap-8 py-7">
+          <div className="p-7">
+            <form
+              className="flex flex-col items-end justify-center gap-5 md:flex-row"
+              onSubmit={handleSubmit}
+            >
+              <div className="items-center w-full gap-1">
+                <label className="mb-1 font-semibold whitespace-nowrap">
+                  Kata kunci
+                </label>
+                <TextInput
+                  className="mt-1"
+                  placeholder="Masukan Pencarian..."
+                  id="searchTerm"
+                  type="text"
+                  value={sidebarData.searchTerm}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="items-center w-full gap-1">
+                <label className="font-semibold">Urutan</label>
+                <Select
+                  className="mt-1"
+                  onChange={handleChange}
+                  value={sidebarData.sort}
+                  id="sort"
+                >
+                  <option value="desc">Terbaru</option>
+                  <option value="asc">Terlama</option>
+                </Select>
+              </div>
+              <div className="items-center w-full gap-1">
+                <label className="font-semibold">Kategori</label>
+                <Select
+                  className="mt-1"
+                  onChange={handleChange}
+                  value={sidebarData.category}
+                  id="category"
+                >
+                  <option value="">-</option>
+                  {categories?.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.title}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="items-center w-full gap-1">
+                <label className="font-semibold">Tag</label>
+                <Select
+                  className="mt-1"
+                  onChange={handleChange}
+                  value={sidebarData.tag}
+                  id="tag"
+                >
+                  <option value="">-</option>
+                  {tags?.map((tag) => (
+                    <option key={tag._id} value={tag._id}>
+                      {tag.title}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="items-end w-full gap-1">
+                <label htmlFor="">&nbsp;</label>
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 mb-0.5 transition duration-75 ease-in-out rounded-md text-primary outline outline-2 hover:bg-primary hover:text-white"
+                >
+                  Cari
+                </button>
+                {/* <Button outline gradientDuoTone="purpleToPink">
                 Cari
               </Button> */}
+              </div>
+            </form>
+          </div>
+          <div>
+            <h1 className="p-3 mx-4 mt-5 text-base font-semibold border-gray-500 md:text-xl sm:border-b ">
+              Hasil Pencarian:
+            </h1>
+            <div className="flex flex-wrap gap-4 p-7">
+              {!loading && posts.length === 0 && (
+                <p className="text-base text-gray-500 md:text-xl">
+                  Postingan artikel tidak ditemukan
+                </p>
+              )}
+              {loading && (
+                <p className="text-base text-gray-500 md:text-xl">Loading...</p>
+              )}
+              {!loading &&
+                posts &&
+                posts.map((post) => (
+                  <PostCard
+                    key={post._id}
+                    post={post}
+                    cls="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]"
+                  />
+                ))}
+              {showMore && (
+                <button
+                  onClick={handleShowMore}
+                  className="w-full text-lg text-teal-500 hover:underline p-7"
+                >
+                  Show More
+                </button>
+              )}
             </div>
-          </form>
-        </div>
-        <div>
-          <h1 className="p-3 mx-4 mt-5 text-base font-semibold border-gray-500 md:text-xl sm:border-b ">
-            Hasil Pencarian:
-          </h1>
-          <div className="flex flex-wrap gap-4 p-7">
-            {!loading && posts.length === 0 && (
-              <p className="text-base text-gray-500 md:text-xl">
-                Postingan artikel tidak ditemukan
-              </p>
-            )}
-            {loading && (
-              <p className="text-base text-gray-500 md:text-xl">Loading...</p>
-            )}
-            {!loading &&
-              posts &&
-              posts.map((post) => (
-                <PostCard
-                  key={post._id}
-                  post={post}
-                  cls="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]"
-                />
-              ))}
-            {showMore && (
-              <button
-                onClick={handleShowMore}
-                className="w-full text-lg text-teal-500 hover:underline p-7"
-              >
-                Show More
-              </button>
-            )}
           </div>
         </div>
       </div>

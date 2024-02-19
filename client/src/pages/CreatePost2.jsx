@@ -221,7 +221,7 @@ const CreatePost2 = () => {
               value={title}
               className="d-input w-full d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Jduul"
+              placeholder="Judul"
             />
           </div>
           <div className="w-full d-form-control">

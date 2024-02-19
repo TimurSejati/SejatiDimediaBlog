@@ -1,12 +1,5 @@
-import { BsCheckLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import {
-  HiCalendar,
-  HiEye,
-  HiPencil,
-  HiPencilAlt,
-  HiTag,
-} from "react-icons/hi";
+import { HiEye, HiPencilAlt, HiTag } from "react-icons/hi";
 import { FaThumbsUp } from "react-icons/fa";
 
 export default function PostCard({ post, cls }) {
@@ -28,6 +21,7 @@ export default function PostCard({ post, cls }) {
             src={post?.photo}
             alt="post1"
             className="object-cover object-center w-full md:h-52 lg:h-48 xl:h-60 max-h-[250px]"
+            loading="lazy"
           />
         </Link>
       </div>
