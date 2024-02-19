@@ -288,7 +288,10 @@ const viewPost = async (req, res) => {
     // Extract timestamp for comparison
     const currentTimestamp = new Date();
     if (req.user) {
-      if (req?.user?._id == "65abd134d93917379a2c5b0a") {
+      if (
+        req?.user?._id == "65abd134d93917379a2c5b0a" ||
+        req?.user?._id == "65b3cbd7f104a616e7d9c708"
+      ) {
         return res.json({ message: "Nothing view" });
       }
       const existingViewer = post.views.find(
